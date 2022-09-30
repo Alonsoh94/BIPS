@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
 {
-    internal class AnularINFILE
+    public class AnularINFILE
     {
     }
 }

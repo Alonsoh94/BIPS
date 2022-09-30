@@ -7,18 +7,14 @@ namespace BIPS.MODELOS
     {
         public Paise()
         {
-            Clientes = new HashSet<Cliente>();
             Departamentos = new HashSet<Departamento>();
-            Empresas = new HashSet<Empresa>();
         }
 
         public int Id { get; set; }
-        public string Codigo { get; set; } = null!;
+        public int Codigo { get; set; }
         public string NombrePais { get; set; } = null!;
-        public string? AcronimoPais { get; set; }
+        public string AcronimoPais { get; set; } = null!;
 
-        public virtual ICollection<Cliente> Clientes { get; set; }
         public virtual ICollection<Departamento> Departamentos { get; set; }
-        public virtual ICollection<Empresa> Empresas { get; set; }
     }
 }

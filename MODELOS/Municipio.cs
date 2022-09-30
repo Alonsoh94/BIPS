@@ -9,6 +9,7 @@ namespace BIPS.MODELOS
         {
             Clientes = new HashSet<Cliente>();
             Empresas = new HashSet<Empresa>();
+            Establecimientos = new HashSet<Establecimiento>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace BIPS.MODELOS
         public virtual Departamento DepartamentoNavigation { get; set; } = null!;
         public virtual ICollection<Cliente> Clientes { get; set; }
         public virtual ICollection<Empresa> Empresas { get; set; }
+        public virtual ICollection<Establecimiento> Establecimientos { get; set; }
     }
 }

@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="NEGOCIO\CONTROLADORES\" />
-    <Folder Include="NEGOCIO\PROCESOS\FEL\DTE\VALIDACIONES\" />
     <Folder Include="PRESENTACION\" />
   </ItemGroup>
 

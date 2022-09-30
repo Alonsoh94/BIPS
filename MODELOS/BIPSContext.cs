@@ -16,34 +16,55 @@ namespace BIPS.MODELOS
         {
         }
 
+        public virtual DbSet<Adenda> Adendas { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
+        public virtual DbSet<ConfiguracionesFel> ConfiguracionesFels { get; set; } = null!;
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
-        public virtual DbSet<FelAdenda> FelAdendas { get; set; } = null!;
-        public virtual DbSet<FelConfiguracion> FelConfiguracions { get; set; } = null!;
-        public virtual DbSet<FelFrase> FelFrases { get; set; } = null!;
-        public virtual DbSet<FelImpuesto> FelImpuestos { get; set; } = null!;
-        public virtual DbSet<FelItemsImpuesto> FelItemsImpuestos { get; set; } = null!;
-        public virtual DbSet<ItemsPedido> ItemsPedidos { get; set; } = null!;
-        public virtual DbSet<Moneda> Monedas { get; set; } = null!;
+        public virtual DbSet<Establecimiento> Establecimientos { get; set; } = null!;
+        public virtual DbSet<FrasesEscenariosFiscale> FrasesEscenariosFiscales { get; set; } = null!;
+        public virtual DbSet<ImpuestosPedido> ImpuestosPedidos { get; set; } = null!;
+        public virtual DbSet<ItemsImpuesto> ItemsImpuestos { get; set; } = null!;
+        public virtual DbSet<ItemsPedidoPv> ItemsPedidoPvs { get; set; } = null!;
+        public virtual DbSet<Monedum> Moneda { get; set; } = null!;
         public virtual DbSet<Municipio> Municipios { get; set; } = null!;
         public virtual DbSet<Paise> Paises { get; set; } = null!;
-        public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
-        public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; } = null!;
+        public virtual DbSet<PedidoPv> PedidoPvs { get; set; } = null!;
+        public virtual DbSet<TipoDocumentoFiscal> TipoDocumentoFiscals { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
+                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Adenda>(entity =>
+            {
+                entity.Property(e => e.Clave)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Valor)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmpresaNavigation)
+                    .WithMany(p => p.Adenda)
+                    .HasForeignKey(d => d.Empresa)
+                    .HasConstraintName("FK_Adendas_Empresa");
+            });
+
             modelBuilder.Entity<Cliente>(entity =>
             {
+                entity.ToTable("Cliente");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.Apellidos)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -54,7 +75,7 @@ namespace BIPS.MODELOS
                     .IsFixedLength();
 
                 entity.Property(e => e.CorreoElectronico)
-                    .HasMaxLength(75)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Direccion)
@@ -62,7 +83,7 @@ namespace BIPS.MODELOS
                     .IsUnicode(false);
 
                 entity.Property(e => e.Nit)
-                    .HasMaxLength(100)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("NIT");
 
@@ -70,141 +91,28 @@ namespace BIPS.MODELOS
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.CiudadNavigation)
-                    .WithMany(p => p.Clientes)
-                    .HasForeignKey(d => d.Ciudad)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Customer_City");
-
-                entity.HasOne(d => d.DepartamentoNavigation)
-                    .WithMany(p => p.Clientes)
-                    .HasForeignKey(d => d.Departamento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Customer_State");
-
-                entity.HasOne(d => d.PaisNavigation)
-                    .WithMany(p => p.Clientes)
-                    .HasForeignKey(d => d.Pais)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Customer_Country");
-            });
-
-            modelBuilder.Entity<Departamento>(entity =>
-            {
-                entity.Property(e => e.StateName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.CountryNavigation)
-                    .WithMany(p => p.Departamentos)
-                    .HasForeignKey(d => d.Country)
-                    .HasConstraintName("FK_State_Country");
-            });
-
-            modelBuilder.Entity<Empresa>(entity =>
-            {
-                entity.Property(e => e.CodigoPostal)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CorreoElectronico)
-                    .HasMaxLength(70)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Direccion)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Estado).HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.NombreComercial)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.NumeroPatronal)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RazonSocial)
-                    .HasMaxLength(60)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RegimenIva)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("RegimenIVA");
-
-                entity.Property(e => e.RepresentanteLegal)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Rtu)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .HasColumnName("RTU");
-
-                entity.Property(e => e.Telefono1)
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Telefono2)
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.DepartamentoNavigation)
-                    .WithMany(p => p.Empresas)
-                    .HasForeignKey(d => d.Departamento)
-                    .HasConstraintName("FK_Business_State");
-
-                entity.HasOne(d => d.MonedaBaseNavigation)
-                    .WithMany(p => p.Empresas)
-                    .HasForeignKey(d => d.MonedaBase)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Business_Currency");
-
                 entity.HasOne(d => d.MunicipioNavigation)
-                    .WithMany(p => p.Empresas)
+                    .WithMany(p => p.Clientes)
                     .HasForeignKey(d => d.Municipio)
-                    .HasConstraintName("FK_Business_City");
-
-                entity.HasOne(d => d.PaisNavigation)
-                    .WithMany(p => p.Empresas)
-                    .HasForeignKey(d => d.Pais)
-                    .HasConstraintName("FK_Business_Country");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Cliente_Cliente");
             });
 
-            modelBuilder.Entity<FelAdenda>(entity =>
+            modelBuilder.Entity<ConfiguracionesFel>(entity =>
             {
-                entity.ToTable("FEL_Adendas");
-
-                entity.Property(e => e.Clave)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Valor)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<FelConfiguracion>(entity =>
-            {
-                entity.ToTable("FEL_Configuracion");
+                entity.ToTable("ConfiguracionesFEL");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Clave)
-                    .HasMaxLength(100)
+                entity.Property(e => e.Calve)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Certificador)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ExpiraToken).HasColumnType("datetime");
-
-                entity.Property(e => e.Llave)
-                    .HasMaxLength(256)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.NombreCertificador)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.PathPdfgenerado)
                     .HasMaxLength(150)
@@ -220,144 +128,258 @@ namespace BIPS.MODELOS
                     .HasMaxLength(1024)
                     .IsUnicode(false);
 
-                entity.Property(e => e.UrlAnular)
+                entity.Property(e => e.Urlanular)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_Anular");
+                    .HasColumnName("URLAnular");
 
-                entity.Property(e => e.UrlCertificar)
+                entity.Property(e => e.Urlcertificar)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_Certificar");
+                    .HasColumnName("URLCertificar");
 
-                entity.Property(e => e.UrlFirmar)
+                entity.Property(e => e.Urlfirmar)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_Firmar");
+                    .HasColumnName("URLFirmar");
 
-                entity.Property(e => e.UrlRetornarDatos)
+                entity.Property(e => e.UrlretornarDatos)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_RetornarDatos");
+                    .HasColumnName("URLRetornarDatos");
 
-                entity.Property(e => e.UrlRetornarPdf)
+                entity.Property(e => e.UrlretornarPdf)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_RetornarPDF");
+                    .HasColumnName("URLRetornarPDF");
 
-                entity.Property(e => e.UrlRetornarXml)
+                entity.Property(e => e.UrlretornarXml)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_RetornarXML");
+                    .HasColumnName("URLRetornarXML");
 
-                entity.Property(e => e.UrlToken)
+                entity.Property(e => e.Urltoken)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_Token");
+                    .HasColumnName("URLToken");
 
-                entity.Property(e => e.UrlVerificarDocumento)
+                entity.Property(e => e.UrlverificarDocumento)
                     .HasMaxLength(150)
                     .IsUnicode(false)
-                    .HasColumnName("URL_VerificarDocumento");
+                    .HasColumnName("URLVerificarDocumento");
 
-                entity.Property(e => e.UsuarioEmisor)
-                    .HasMaxLength(30)
+                entity.Property(e => e.Usuario)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.EmpresaNavigation)
-                    .WithMany(p => p.FelConfiguracions)
+                    .WithMany(p => p.ConfiguracionesFels)
                     .HasForeignKey(d => d.Empresa)
-                    .HasConstraintName("FK_FEL_Setting_Business");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ConfiguracionesFEL_Empresa");
             });
 
-            modelBuilder.Entity<FelFrase>(entity =>
+            modelBuilder.Entity<Departamento>(entity =>
             {
-                entity.ToTable("FEL_Frases");
+                entity.ToTable("Departamento");
 
+                entity.Property(e => e.NombreDepartamento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.PaisNavigation)
+                    .WithMany(p => p.Departamentos)
+                    .HasForeignKey(d => d.Pais)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Departamento_Paises");
+            });
+
+            modelBuilder.Entity<Empresa>(entity =>
+            {
+                entity.ToTable("Empresa");
+
+                entity.Property(e => e.CorreoElectronico)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Direccion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.NombreComercial)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroPatronal)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RazonSocial)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RegimenIva)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("RegimenIVA");
+
+                entity.Property(e => e.RepresentanteLegal)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Rtu)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("RTU");
+
+                entity.Property(e => e.Telefono1)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telefono2)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.MonedaBaseNavigation)
+                    .WithMany(p => p.Empresas)
+                    .HasForeignKey(d => d.MonedaBase)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Empresa_Moneda");
+
+                entity.HasOne(d => d.MunicipioNavigation)
+                    .WithMany(p => p.Empresas)
+                    .HasForeignKey(d => d.Municipio)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Empresa_Municipio");
+            });
+
+            modelBuilder.Entity<Establecimiento>(entity =>
+            {
+                entity.ToTable("Establecimiento");
+
+                entity.Property(e => e.CodigoPostal)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("codigoPostal")
+                    .IsFixedLength();
+
+                entity.Property(e => e.Direccion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreEstablecimiento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmpresaNavigation)
+                    .WithMany(p => p.Establecimientos)
+                    .HasForeignKey(d => d.Empresa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Establecimiento_Empresa");
+
+                entity.HasOne(d => d.MunicipioNavigation)
+                    .WithMany(p => p.Establecimientos)
+                    .HasForeignKey(d => d.Municipio)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Establecimiento_Municipio");
+            });
+
+            modelBuilder.Entity<FrasesEscenariosFiscale>(entity =>
+            {
                 entity.Property(e => e.FechaResolucion).HasColumnType("datetime");
 
                 entity.Property(e => e.NumeroResolucion)
-                    .HasMaxLength(256)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.TipoDocumentoNavigation)
-                    .WithMany(p => p.FelFrases)
-                    .HasForeignKey(d => d.TipoDocumento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FEL_Phrase_DocumentType");
+                entity.HasOne(d => d.TipoDocumentoFiscalNavigation)
+                    .WithMany(p => p.FrasesEscenariosFiscales)
+                    .HasForeignKey(d => d.TipoDocumentoFiscal)
+                    .HasConstraintName("FK_FrasesEscenariosFiscales_TipoDocumentoFiscal");
             });
 
-            modelBuilder.Entity<FelImpuesto>(entity =>
+            modelBuilder.Entity<ImpuestosPedido>(entity =>
             {
-                entity.ToTable("FEL_Impuestos");
+                entity.ToTable("ImpuestosPedido");
 
                 entity.Property(e => e.NombreCorto)
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TotalMontoImpuesto).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.TotalMontoImpuesto).HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.PedidoNavigation)
-                    .WithMany(p => p.FelImpuestos)
+                    .WithMany(p => p.ImpuestosPedidos)
                     .HasForeignKey(d => d.Pedido)
-                    .HasConstraintName("FK_FEL_Tax_FEL_Tax");
+                    .HasConstraintName("FK_ImpuestosPedido_PedidoPV");
             });
 
-            modelBuilder.Entity<FelItemsImpuesto>(entity =>
+            modelBuilder.Entity<ItemsImpuesto>(entity =>
             {
-                entity.ToTable("FEL_ItemsImpuestos");
+                entity.ToTable("ItemsImpuesto");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.ItemsPedidoPv).HasColumnName("ItemsPedidoPV");
 
-                entity.Property(e => e.MontoGravable).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.MontoGravable).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.MontoImpuesto).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.MontoImpuesto).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.NombreCorto)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.ItemsPedidoPvNavigation)
+                    .WithMany(p => p.ItemsImpuestos)
+                    .HasForeignKey(d => d.ItemsPedidoPv)
+                    .HasConstraintName("FK_ItemsImpuesto_ItemsImpuesto");
             });
 
-            modelBuilder.Entity<ItemsPedido>(entity =>
+            modelBuilder.Entity<ItemsPedidoPv>(entity =>
             {
-                entity.ToTable("Items_Pedidos");
+                entity.ToTable("ItemsPedidoPV");
 
                 entity.Property(e => e.BienOservicio)
-                    .HasMaxLength(1)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("BienOServicio")
                     .IsFixedLength();
 
-                entity.Property(e => e.Cantidad).HasColumnType("numeric(18, 2)");
+                entity.Property(e => e.Fecha).HasColumnType("datetime");
 
-                entity.Property(e => e.Descripcion).HasColumnType("text");
+                entity.Property(e => e.PedidoPv).HasColumnName("PedidoPV");
 
-                entity.Property(e => e.Descuento).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.Fecha)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.SubTotal).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.Precio).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.TotalDescuento).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(12, 2)");
+                entity.Property(e => e.TotalItems).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.UnidadMedida)
+                entity.Property(e => e.UnidadMedid)
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.HasOne(d => d.PedidoNavigation)
-                    .WithMany(p => p.ItemsPedidos)
-                    .HasForeignKey(d => d.Pedido)
+                entity.HasOne(d => d.PedidoPvNavigation)
+                    .WithMany(p => p.ItemsPedidoPvs)
+                    .HasForeignKey(d => d.PedidoPv)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_DetailsSaleOrder_DetailsSaleOrder");
+                    .HasConstraintName("FK_ItemsPedidoPV_PedidoPV");
             });
 
-            modelBuilder.Entity<Moneda>(entity =>
+            modelBuilder.Entity<Monedum>(entity =>
             {
-                entity.Property(e => e.AcronimoMoneda)
-                    .HasMaxLength(5)
+                entity.Property(e => e.Acronimo)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .IsFixedLength();
 
@@ -368,35 +390,38 @@ namespace BIPS.MODELOS
 
             modelBuilder.Entity<Municipio>(entity =>
             {
+                entity.ToTable("Municipio");
+
                 entity.Property(e => e.NombreMunicipio)
-                    .HasMaxLength(50)
+                    .HasMaxLength(60)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.DepartamentoNavigation)
                     .WithMany(p => p.Municipios)
                     .HasForeignKey(d => d.Departamento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_City_State");
+                    .HasConstraintName("FK_Municipio_Departamento");
             });
 
             modelBuilder.Entity<Paise>(entity =>
             {
+                entity.HasIndex(e => e.Codigo, "IX_Paises")
+                    .IsUnique();
+
                 entity.Property(e => e.AcronimoPais)
-                    .HasMaxLength(5)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.Codigo)
-                    .HasMaxLength(5)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.NombrePais)
-                    .HasMaxLength(40)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Pedido>(entity =>
+            modelBuilder.Entity<PedidoPv>(entity =>
             {
+                entity.ToTable("PedidoPV");
+
                 entity.Property(e => e.AplicaIva)
                     .IsRequired()
                     .HasColumnName("AplicaIVA")
@@ -406,46 +431,59 @@ namespace BIPS.MODELOS
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Fecha)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.Fecha).HasColumnType("datetime");
 
                 entity.Property(e => e.LocalOexportacion)
                     .IsRequired()
                     .HasColumnName("LocalOExportacion")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.MontoDescuento).HasColumnType("decimal(14, 2)");
+                entity.Property(e => e.MontoDescuento).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.MontoFactura).HasColumnType("decimal(14, 2)");
+                entity.Property(e => e.MontoPedido).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.MontoPedido).HasColumnType("decimal(4, 2)");
-
-                entity.Property(e => e.PorcentajeDescuento).HasColumnType("decimal(14, 2)");
+                entity.Property(e => e.PorcentajeDescuento).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Referencia)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength();
-
-                entity.Property(e => e.TipoDocumento)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength();
-
-                entity.Property(e => e.TipoPersoneria).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<TipoDocumento>(entity =>
-            {
-                entity.Property(e => e.Descripcion).HasColumnType("text");
-
-                entity.Property(e => e.NombreDocumento)
-                    .HasMaxLength(60)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Nomenglatura)
-                    .HasMaxLength(6)
+                entity.Property(e => e.TotalPedido).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.ClienteNavigation)
+                    .WithMany(p => p.PedidoPvs)
+                    .HasForeignKey(d => d.Cliente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PedidoPV_Cliente");
+
+                entity.HasOne(d => d.EstablecimientoNavigation)
+                    .WithMany(p => p.PedidoPvs)
+                    .HasForeignKey(d => d.Establecimiento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PedidoPV_Establecimiento");
+
+                entity.HasOne(d => d.TipoDocumentoFiscalNavigation)
+                    .WithMany(p => p.PedidoPvs)
+                    .HasForeignKey(d => d.TipoDocumentoFiscal)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PedidoPV_TipoDocumentoFiscal");
+            });
+
+            modelBuilder.Entity<TipoDocumentoFiscal>(entity =>
+            {
+                entity.ToTable("TipoDocumentoFiscal");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreDocumento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nomenclatura)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
                     .IsFixedLength();
             });
 

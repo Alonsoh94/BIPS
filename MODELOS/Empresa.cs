@@ -7,7 +7,9 @@ namespace BIPS.MODELOS
     {
         public Empresa()
         {
-            FelConfiguracions = new HashSet<FelConfiguracion>();
+            Adenda = new HashSet<Adenda>();
+            ConfiguracionesFels = new HashSet<ConfiguracionesFel>();
+            Establecimientos = new HashSet<Establecimiento>();
         }
 
         public int Id { get; set; }
@@ -19,19 +21,17 @@ namespace BIPS.MODELOS
         public string? Telefono2 { get; set; }
         public int MonedaBase { get; set; }
         public string? NumeroPatronal { get; set; }
-        public string RepresentanteLegal { get; set; } = null!;
-        public string RegimenIva { get; set; } = null!;
+        public string? RepresentanteLegal { get; set; }
+        public string? RegimenIva { get; set; }
+        public int Municipio { get; set; }
         public string Direccion { get; set; } = null!;
-        public string CodigoPostal { get; set; } = null!;
-        public int? Municipio { get; set; }
-        public int? Departamento { get; set; }
-        public int? Pais { get; set; }
         public bool? Estado { get; set; }
+        public DateTime? FechaCreacion { get; set; }
 
-        public virtual Departamento? DepartamentoNavigation { get; set; }
-        public virtual Moneda MonedaBaseNavigation { get; set; } = null!;
-        public virtual Municipio? MunicipioNavigation { get; set; }
-        public virtual Paise? PaisNavigation { get; set; }
-        public virtual ICollection<FelConfiguracion> FelConfiguracions { get; set; }
+        public virtual Monedum MonedaBaseNavigation { get; set; } = null!;
+        public virtual Municipio MunicipioNavigation { get; set; } = null!;
+        public virtual ICollection<Adenda> Adenda { get; set; }
+        public virtual ICollection<ConfiguracionesFel> ConfiguracionesFels { get; set; }
+        public virtual ICollection<Establecimiento> Establecimientos { get; set; }
     }
 }
