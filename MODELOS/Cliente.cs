@@ -19,7 +19,9 @@ namespace BIPS.MODELOS
         public string Direccion { get; set; } = null!;
         public string CodigoPostal { get; set; } = null!;
         public bool TipoEspecial { get; set; }
+        public int Empresa { get; set; }
 
+        public virtual Empresa EmpresaNavigation { get; set; } = null!;
         public virtual Municipio MunicipioNavigation { get; set; } = null!;
         public virtual ICollection<PedidoPv> PedidoPvs { get; set; }
     }

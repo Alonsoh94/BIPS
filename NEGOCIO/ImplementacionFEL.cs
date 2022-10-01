@@ -12,7 +12,8 @@ namespace BIPS.NEGOCIO
         XMLCertificacion XMLCertificacion = new();
         public void ProbarImplementacion()
         {
-            XMLCertificacion.GenerarXMLCertificacion();
+            int digito = 1;
+            XMLCertificacion.GenerarXMLCertificacion(digito);
         }
     }
 }

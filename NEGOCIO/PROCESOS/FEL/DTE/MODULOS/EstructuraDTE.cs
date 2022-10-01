@@ -1,4 +1,5 @@
-﻿using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+﻿using BIPS.MODELOS;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         string xsi = "http://www.w3.org/2001/XMLSchema-instance";
         string ds = "http://www.w3.org/2000/09/xmldsig#";
         static XmlNode NodoDatosEminisonXML;
+        static XmlNode SAT;
       
         public XmlDocument CrearEstructuraXML()
         {
@@ -88,6 +90,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         }
 
         public XmlNode NodoDatosEmision() => NodoDatosEminisonXML;
-        
+
+        public PedidoPv PedidoActual()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

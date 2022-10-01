@@ -12,8 +12,8 @@ namespace BIPS.MODELOS
 
         public int Id { get; set; }
         public int Codigo { get; set; }
-        public string NombrePais { get; set; } = null!;
-        public string AcronimoPais { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
+        public string Acronimo { get; set; } = null!;
 
         public virtual ICollection<Departamento> Departamentos { get; set; }
     }

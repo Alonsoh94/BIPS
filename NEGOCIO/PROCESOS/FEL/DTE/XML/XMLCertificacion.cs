@@ -19,11 +19,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         string xsi = "http://www.w3.org/2001/XMLSchema-instance";
         string ds = "http://www.w3.org/2000/09/xmldsig#";
 
-        public void GenerarXMLCertificacion()
+        public void GenerarXMLCertificacion(int id)
         {
             EstructuraDTE oEstructuraDTE = new EstructuraDTE();
             DatosGeneralesDTE oDatosGeneralesDTE = new DatosGeneralesDTE(Contexto);
-            EmisorDTE oEmisorDTE = new EmisorDTE();
+            EmisorDTE oEmisorDTE = new EmisorDTE(Contexto);
             ReceptorDTE oReceptorDTE = new ReceptorDTE();
             FrasesDTE oFrasesDTE = new FrasesDTE();
             ItemsDTE oItemsDTE = new ItemsDTE();
@@ -41,10 +41,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
             void ConstruirXLMFACT()
             {
                 DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
-                DocumentoXML = oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML,dte);
-              
+                DocumentoXML = oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML,dte, id);
+                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte,id);
 
-                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\MISXML\BipsFACT.xml");
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\BipsFACT.xml");
             }
             #endregion
 

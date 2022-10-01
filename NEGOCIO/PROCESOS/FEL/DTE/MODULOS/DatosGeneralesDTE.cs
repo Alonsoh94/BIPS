@@ -12,23 +12,23 @@ using System.Xml.Linq;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
-    public class DatosGeneralesDTE 
+    public class DatosGeneralesDTE : NodosInterface
     {
         BIPSContext dbContext;
+        static PedidoPv oPedido;
 
         NodosInterface Nodos = new EstructuraDTE();
         public DatosGeneralesDTE(BIPSContext Contexto)
         {            
             dbContext = Contexto;
         }
-       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte)
+       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte, int id)
        {
             
             try
             {
-                XmlNode DatosEmision = Nodos.NodoDatosEmision();
-                int miId = 2;
-                PedidoPv oPedido = dbContext.PedidoPvs.Where(p => p.Id == miId).FirstOrDefault<PedidoPv>();
+                XmlNode DatosEmision = Nodos.NodoDatosEmision();                
+                oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault<PedidoPv>();
                 Establecimiento oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
                 Empresa oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault<Empresa>();
                 Monedum oMoneda = dbContext.Moneda.Where(m => m.Id == oEmpresa.MonedaBase).FirstOrDefault<Monedum>();
@@ -81,12 +81,15 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 
             }
 
-
-
             return Documento;
        }
+
+        public XmlNode NodoDatosEmision()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PedidoPv PedidoActual() => oPedido;
         
-
-
     }
 }

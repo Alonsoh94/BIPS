@@ -11,7 +11,7 @@ namespace BIPS.MODELOS
         }
 
         public int Id { get; set; }
-        public string NombreDepartamento { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
         public int Pais { get; set; }
 
         public virtual Paise PaisNavigation { get; set; } = null!;

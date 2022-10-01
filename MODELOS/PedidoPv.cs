@@ -23,7 +23,6 @@ namespace BIPS.MODELOS
         public decimal? MontoDescuento { get; set; }
         public decimal TotalPedido { get; set; }
         public int? Items { get; set; }
-        public string? Referencia { get; set; }
         public int TipoDocumentoFiscal { get; set; }
         public long NumeroAcceso { get; set; }
         public bool? LocalOexportacion { get; set; }

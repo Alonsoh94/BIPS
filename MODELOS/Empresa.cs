@@ -7,7 +7,8 @@ namespace BIPS.MODELOS
     {
         public Empresa()
         {
-            Adenda = new HashSet<Adenda>();
+            Adenda = new HashSet<Adendum>();
+            Clientes = new HashSet<Cliente>();
             ConfiguracionesFels = new HashSet<ConfiguracionesFel>();
             Establecimientos = new HashSet<Establecimiento>();
         }
@@ -15,7 +16,7 @@ namespace BIPS.MODELOS
         public int Id { get; set; }
         public string RazonSocial { get; set; } = null!;
         public string NombreComercial { get; set; } = null!;
-        public string? Rtu { get; set; }
+        public string Rtu { get; set; } = null!;
         public string? CorreoElectronico { get; set; }
         public string? Telefono1 { get; set; }
         public string? Telefono2 { get; set; }
@@ -26,11 +27,12 @@ namespace BIPS.MODELOS
         public int Municipio { get; set; }
         public string Direccion { get; set; } = null!;
         public bool? Estado { get; set; }
-        public DateTime? FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
 
         public virtual Monedum MonedaBaseNavigation { get; set; } = null!;
         public virtual Municipio MunicipioNavigation { get; set; } = null!;
-        public virtual ICollection<Adenda> Adenda { get; set; }
+        public virtual ICollection<Adendum> Adenda { get; set; }
+        public virtual ICollection<Cliente> Clientes { get; set; }
         public virtual ICollection<ConfiguracionesFel> ConfiguracionesFels { get; set; }
         public virtual ICollection<Establecimiento> Establecimientos { get; set; }
     }

@@ -11,7 +11,7 @@ namespace BIPS.MODELOS
         }
 
         public int Id { get; set; }
-        public string NombreEstablecimiento { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
         public string Direccion { get; set; } = null!;
         public string CodigoPostal { get; set; } = null!;
         public int Municipio { get; set; }

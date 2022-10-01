@@ -12,8 +12,8 @@ namespace BIPS.MODELOS
         }
 
         public int Id { get; set; }
-        public string NombreDocumento { get; set; } = null!;
-        public string Descripcion { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
+        public string? Descripcion { get; set; }
         public string Nomenclatura { get; set; } = null!;
 
         public virtual ICollection<FrasesEscenariosFiscale> FrasesEscenariosFiscales { get; set; }
