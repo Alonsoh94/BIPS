@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
 {
-    internal class ComplementoNABN
+    internal class NCREComplemento
     {
     }
 }

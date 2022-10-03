@@ -1,6 +1,7 @@
 ﻿using BIPS.MODELOS;
 using BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE;
 using BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         string dte = "http://www.sat.gob.gt/dte/fel/0.2.0";
         string xsi = "http://www.w3.org/2001/XMLSchema-instance";
         string ds = "http://www.w3.org/2000/09/xmldsig#";
+        string cex = "http://www.sat.gob.gt/face2/ComplementoExportaciones/0.1.0";
 
         public void GenerarXMLCertificacion(int id)
         {
@@ -29,6 +31,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
             ItemsImpuestosDTE oItemsImpuestosDTE = new ItemsImpuestosDTE();          
             TotalesDTE oTotalesDTE = new TotalesDTE();
             AdendasDTE oAdendasDTE = new AdendasDTE();
+            FCAMComplemento oFCAMComplemento = new FCAMComplemento();
 
 
 
@@ -46,9 +49,27 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
                 oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
+                
+                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                //DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACT.xml");
+            }
+            #endregion
+
+            #region Construir XML tipo FCAM
+            void ConstruirXLMFCAM()
+            {
+                DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
+                oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
+                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
+                oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
+                oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
+                oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
+                oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
+                oFCAMComplemento.FCAMComplementoXML(DocumentoXML, dte, id,xsi,cex);
+                DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
 
                 ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
-                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACT.xml");
+                //DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACT.xml");
             }
             #endregion
 

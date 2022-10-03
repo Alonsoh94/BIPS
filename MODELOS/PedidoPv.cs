@@ -7,6 +7,9 @@ namespace BIPS.MODELOS
     {
         public PedidoPv()
         {
+            ComplementoExpos = new HashSet<ComplementoExpo>();
+            ComplementoFcams = new HashSet<ComplementoFcam>();
+            ComplementoFesps = new HashSet<ComplementoFesp>();
             ImpuestosPedidos = new HashSet<ImpuestosPedido>();
             ItemsPedidoPvs = new HashSet<ItemsPedidoPv>();
         }
@@ -30,6 +33,9 @@ namespace BIPS.MODELOS
         public virtual Cliente ClienteNavigation { get; set; } = null!;
         public virtual Establecimiento EstablecimientoNavigation { get; set; } = null!;
         public virtual TipoDocumentoFiscal TipoDocumentoFiscalNavigation { get; set; } = null!;
+        public virtual ICollection<ComplementoExpo> ComplementoExpos { get; set; }
+        public virtual ICollection<ComplementoFcam> ComplementoFcams { get; set; }
+        public virtual ICollection<ComplementoFesp> ComplementoFesps { get; set; }
         public virtual ICollection<ImpuestosPedido> ImpuestosPedidos { get; set; }
         public virtual ICollection<ItemsPedidoPv> ItemsPedidoPvs { get; set; }
     }

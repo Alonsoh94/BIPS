@@ -18,6 +18,10 @@ namespace BIPS.MODELOS
 
         public virtual DbSet<Adendum> Adenda { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
+        public virtual DbSet<ComplementoExpo> ComplementoExpos { get; set; } = null!;
+        public virtual DbSet<ComplementoFcam> ComplementoFcams { get; set; } = null!;
+        public virtual DbSet<ComplementoFesp> ComplementoFesps { get; set; } = null!;
+        public virtual DbSet<ComplementoNota> ComplementoNotas { get; set; } = null!;
         public virtual DbSet<ConfiguracionesFel> ConfiguracionesFels { get; set; } = null!;
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
@@ -37,7 +41,7 @@ namespace BIPS.MODELOS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
+                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
             }
         }
 
@@ -100,6 +104,161 @@ namespace BIPS.MODELOS
                     .HasForeignKey(d => d.Municipio)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Cliente_Municipio1");
+            });
+
+            modelBuilder.Entity<ComplementoExpo>(entity =>
+            {
+                entity.ToTable("ComplementoEXPO");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CodigoComprador)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CodigoExportador)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DireccionComprador)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DireccionConsignatarioOdestinatario)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("DireccionConsignatarioODestinatario");
+
+                entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
+
+                entity.Property(e => e.Incoterm)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("INCOTERM");
+
+                entity.Property(e => e.NombreComplemento)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreComprador)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreConsignatarioOdestinatario)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("NombreConsignatarioODestinatario");
+
+                entity.Property(e => e.NombreExportador)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OtraReferencia)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Uricomplemento)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("URIComplemento");
+
+                entity.Property(e => e.Version).HasColumnType("decimal(4, 2)");
+
+                entity.HasOne(d => d.PedidoPvNavigation)
+                    .WithMany(p => p.ComplementoExpos)
+                    .HasForeignKey(d => d.PedidoPv)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ComplementoEXPO_PedidoPv");
+            });
+
+            modelBuilder.Entity<ComplementoFcam>(entity =>
+            {
+                entity.ToTable("ComplementoFCAM");
+
+                entity.Property(e => e.FechaVencimiento).HasColumnType("datetime");
+
+                entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
+
+                entity.Property(e => e.MontoAbono).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.NombreComplemento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Uricomplemento)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("URIComplemento");
+
+                entity.Property(e => e.Version).HasColumnType("decimal(4, 2)");
+
+                entity.HasOne(d => d.PedidoPvNavigation)
+                    .WithMany(p => p.ComplementoFcams)
+                    .HasForeignKey(d => d.PedidoPv)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ComplementoFCAM_PedidoPv");
+            });
+
+            modelBuilder.Entity<ComplementoFesp>(entity =>
+            {
+                entity.ToTable("ComplementoFESP");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
+
+                entity.Property(e => e.NombreComplemento).HasMaxLength(50);
+
+                entity.Property(e => e.RetencionIsr)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("RetencionISR");
+
+                entity.Property(e => e.RetencionIva)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("RetencionIVA");
+
+                entity.Property(e => e.TotalMenosRetenciones).HasColumnType("decimal(10, 2)");
+
+                entity.Property(e => e.Uricomplemento)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("URIComplemento");
+
+                entity.HasOne(d => d.PedidoPvNavigation)
+                    .WithMany(p => p.ComplementoFesps)
+                    .HasForeignKey(d => d.PedidoPv)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ComplementoFESP_ComplementoFESP");
+            });
+
+            modelBuilder.Entity<ComplementoNota>(entity =>
+            {
+                entity.ToTable("ComplementoNOTAS");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.FechaEmisionDocumentoOrigen).HasColumnType("datetime");
+
+                entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
+
+                entity.Property(e => e.MotivoAjuste)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreComplemento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroAutorizacionDocumentoOrigen)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Uricomplemento)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("URIComplemento");
+
+                entity.Property(e => e.Version).HasColumnType("decimal(4, 2)");
             });
 
             modelBuilder.Entity<ConfiguracionesFel>(entity =>
