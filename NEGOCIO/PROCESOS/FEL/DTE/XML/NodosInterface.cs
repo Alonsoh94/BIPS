@@ -13,5 +13,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         public XmlNode NodoDatosEmision();
 
         public PedidoPv PedidoActual();
+        public XmlNode NodoSAT();
     }
 }

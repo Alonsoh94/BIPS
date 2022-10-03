@@ -16,23 +16,28 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
     {
         BIPSContext dbContext;
         static PedidoPv oPedido;
-
+        static string CodigoRef;
         NodosInterface Nodos = new EstructuraDTE();
-        public DatosGeneralesDTE(BIPSContext Contexto)
-        {            
-            dbContext = Contexto;
-        }
+            
        public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte, int id)
        {
-            
+            XmlNode DatosEmision;
+            Monedum oMoneda;
+            TipoDocumentoFiscal oTipoDoc;
+
+
             try
             {
-                XmlNode DatosEmision = Nodos.NodoDatosEmision();                
-                oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault<PedidoPv>();
-                Establecimiento oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
-                Empresa oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault<Empresa>();
-                Monedum oMoneda = dbContext.Moneda.Where(m => m.Id == oEmpresa.MonedaBase).FirstOrDefault<Monedum>();
-                TipoDocumentoFiscal oTipoDoc = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
+                using(dbContext = new BIPSContext())
+                {
+                    DatosEmision = Nodos.NodoDatosEmision();
+                    oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault<PedidoPv>();
+                    Establecimiento oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
+                    Empresa oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault<Empresa>();
+                    oMoneda = dbContext.Moneda.Where(m => m.Id == oEmpresa.MonedaBase).FirstOrDefault<Monedum>();
+                    oTipoDoc = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
+
+                }
 
 
                 // ****-----
@@ -75,6 +80,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 NDatosGenerales.Attributes.Append(Tipo);
                 //----*****
 
+                CodigoRef = $"{oTipoDoc.Nomenclatura.Trim()}-{oPedido.Id}";
             }
             catch (Exception)
             {
@@ -90,6 +96,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         }
 
         public PedidoPv PedidoActual() => oPedido;
-        
+
+        public XmlNode NodoSAT()
+        {
+            throw new NotImplementedException();
+        }
+        public string CodigoReferencia() => CodigoRef;
     }
 }

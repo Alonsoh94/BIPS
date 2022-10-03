@@ -15,7 +15,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         string xsi = "http://www.w3.org/2001/XMLSchema-instance";
         string ds = "http://www.w3.org/2000/09/xmldsig#";
         static XmlNode NodoDatosEminisonXML;
-        static XmlNode SAT;
+        static XmlNode NodoRefSAT;
       
         public XmlDocument CrearEstructuraXML()
         {
@@ -61,7 +61,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             //NODO SAT
             XmlNode SAT = DocXML.CreateElement("dte", "SAT", dte);
             GTDocumento.AppendChild(SAT);
-            //NodoRefSAT = SAT;
+            NodoRefSAT = SAT;
 
             XmlAttribute ClaseDocumento = DocXML.CreateAttribute("ClaseDocumento");
             ClaseDocumento.Value = "dte";
@@ -86,6 +86,8 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             DatosEmision.Attributes.Append(ID2);
             //----*****
             NodoDatosEminisonXML = DatosEmision;
+
+            
             return DocXML;
         }
 
@@ -95,5 +97,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         {
             throw new NotImplementedException();
         }
+
+        public XmlNode NodoSAT() => NodoRefSAT;
+
+
     }
 }

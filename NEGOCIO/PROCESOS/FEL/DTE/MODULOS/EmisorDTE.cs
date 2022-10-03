@@ -13,31 +13,34 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
     public class EmisorDTE
     {
+        Municipio oMunicipioEmisor;
+        Departamento oDepartamentoEmisor;
+        Paise oPaisEmisor;
+
         Establecimiento oEstablecimiento = new();
         PedidoPv oPedido;
         XmlNode DatosEmision;
         BIPSContext dbContext;
-        public EmisorDTE(BIPSContext context)
-        {
-            dbContext = context;
-            
-        }
+        static Empresa DatosEmpresa;
+
 
         public XmlDocument ModuloEmisorDTE(XmlDocument DocXML, string dte, int Id)
         {
+            
             NodosInterface nodos = new EstructuraDTE();
-            NodosInterface DatosGenerales = new DatosGeneralesDTE(dbContext);
+            NodosInterface DatosGenerales = new DatosGeneralesDTE();
             DatosEmision = nodos.NodoDatosEmision();
             oPedido = DatosGenerales.PedidoActual();
 
             Empresa oEmpresa = new Empresa();
             try
             {
-                using (BIPSContext dbContext = new BIPSContext())
+                using (dbContext = new BIPSContext())
                 {
                     if (dbContext.Empresas.Any(e => e.Id == Id))
                     {
-                        oEmpresa = dbContext.Empresas.Where(e => e.Id == Id).FirstOrDefault<Empresa>();
+                        oEmpresa = dbContext.Empresas.Where(e => e.Id == Id).FirstOrDefault();
+                        DatosEmpresa = oEmpresa;
                     }
                 }
             }
@@ -48,7 +51,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 
             try
             {
-                using (BIPSContext dbContext = new BIPSContext())
+                using (dbContext = new BIPSContext())
                 {
                     if (dbContext.Establecimientos.Any(e => e.Id == oPedido.Establecimiento))
                     {
@@ -62,20 +65,94 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 throw;
             }
 
+            try
+            {
+                using (BIPSContext dbContext = new BIPSContext())
+                {
+                    if (dbContext.Municipios.Any(e => e.Id == oEstablecimiento.Municipio))
+                    {
+                        oMunicipioEmisor = dbContext.Municipios.Where(m => m.Id == oEstablecimiento.Municipio).FirstOrDefault<Municipio>();
+                        oDepartamentoEmisor = dbContext.Departamentos.Where(d => d.Id == oMunicipioEmisor.Departamento).FirstOrDefault<Departamento>();
+                        oPaisEmisor = dbContext.Paises.Where(p => p.Id == oDepartamentoEmisor.Pais).FirstOrDefault<Paise>();
+
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            try
+            {
+                XmlNode Emisor = DocXML.CreateElement("dte", "Emisor", dte);
+                DatosEmision.AppendChild(Emisor);
+
+                XmlAttribute AAfiliacionIVA = DocXML.CreateAttribute("AfiliacionIVA");
+                AAfiliacionIVA.Value = oEmpresa.RegimenIva.Trim();
+                Emisor.Attributes.Append(AAfiliacionIVA);
+
+                XmlAttribute ACodigoEstablecimiento = DocXML.CreateAttribute("CodigoEstablecimiento");
+                ACodigoEstablecimiento.Value = Convert.ToString(oEstablecimiento.Id);
+                Emisor.Attributes.Append(ACodigoEstablecimiento);
+               
+                if(oEmpresa.CorreoElectronico.Trim() != null || oEmpresa.CorreoElectronico.Trim() != String.Empty)
+                {
+                    XmlAttribute CorreoEmisor = DocXML.CreateAttribute("CorreoEmisor");
+                    CorreoEmisor.Value = oEmpresa.CorreoElectronico.Trim();
+                    Emisor.Attributes.Append(CorreoEmisor);
+                }
+
+                XmlAttribute ANITEmisor = DocXML.CreateAttribute("NITEmisor");
+                ANITEmisor.Value = oEmpresa.Rtu;
+                Emisor.Attributes.Append(ANITEmisor);
+
+                XmlAttribute NombreComercial = DocXML.CreateAttribute("NombreComercial");
+                NombreComercial.Value = oEmpresa.RazonSocial.Trim();
+                Emisor.Attributes.Append(NombreComercial);
+
+                XmlAttribute NombreEmisor = DocXML.CreateAttribute("NombreEmisor");
+                NombreEmisor.Value = oEmpresa.NombreComercial.Trim();
+                Emisor.Attributes.Append(NombreEmisor);
+                //----*****
+
+                //*****------
+                XmlNode DireccionEmisor = DocXML.CreateElement("dte", "DireccionEmisor", dte);
+                Emisor.AppendChild(DireccionEmisor);    //----*****
+                                                          //*****------
+                XmlNode NDireccion = DocXML.CreateElement("dte", "Direccion", dte);
+                DireccionEmisor.AppendChild(NDireccion);
+                NDireccion.InnerText = oEstablecimiento.Direccion.Trim();
+
+                XmlNode NCodigoPostal = DocXML.CreateElement("dte", "CodigoPostal", dte);
+                DireccionEmisor.AppendChild(NCodigoPostal);
+                NCodigoPostal.InnerText = Convert.ToString(oEstablecimiento.CodigoPostal.Trim());
+
+                XmlNode NMunicipio = DocXML.CreateElement("dte", "Municipio", dte);
+                DireccionEmisor.AppendChild(NMunicipio);
+                NMunicipio.InnerText = oMunicipioEmisor.Nombre;
+
+                XmlNode NDepartamento = DocXML.CreateElement("dte", "Departamento", dte);
+                DireccionEmisor.AppendChild(NDepartamento);
+                NDepartamento.InnerText = oDepartamentoEmisor.Nombre;
+
+                XmlNode NPais = DocXML.CreateElement("dte", "Pais", dte);
+                DireccionEmisor.AppendChild(NPais);
+                NPais.InnerText = oPaisEmisor.Acronimo.Trim();    //----*****
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             
-            XmlNode Emisor = DocXML.CreateElement("dte", "Emisor", dte);
-            DatosEmision.AppendChild(Emisor);
-
-            XmlAttribute AAfiliacionIVA = DocXML.CreateAttribute("AfiliacionIVA");
-            AAfiliacionIVA.Value = oEmpresa.RegimenIva.Trim();
-            Emisor.Attributes.Append(AAfiliacionIVA);
-
-            XmlAttribute ACodigoEstablecimiento = DocXML.CreateAttribute("CodigoEstablecimiento");
-            ACodigoEstablecimiento.Value = Convert.ToString(oEstablecimiento.Id);
-            Emisor.Attributes.Append(ACodigoEstablecimiento);
+            
 
 
             return DocXML;
         }
+        public Empresa DatosEmpresariales() => DatosEmpresa;
     }
 }

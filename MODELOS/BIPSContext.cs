@@ -350,15 +350,17 @@ namespace BIPS.MODELOS
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.CostoTotalItems).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Descripcion).HasColumnType("text");
+
+                entity.Property(e => e.Descuento).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fecha).HasColumnType("datetime");
 
+                entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
+
                 entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.SubTotal).HasColumnType("decimal(18, 2)");
-
-                entity.Property(e => e.TotalDescuento).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.UnidadMedid)
                     .HasMaxLength(10)
