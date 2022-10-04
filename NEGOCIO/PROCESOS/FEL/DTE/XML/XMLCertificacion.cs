@@ -19,6 +19,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         string xsi = "http://www.w3.org/2001/XMLSchema-instance";
         string ds = "http://www.w3.org/2000/09/xmldsig#";
         string cex = "http://www.sat.gob.gt/face2/ComplementoExportaciones/0.1.0";
+        string cno = "http://www.sat.gob.gt/face2/ComplementoReferenciaNota/0.1.0";
+
+        string URIComplementoNCRE = "http://www.sat.gob.gt/face2/ComplementoReferenciaNota/0.1.0";
 
         public void GenerarXMLCertificacion(int id)
         {
@@ -85,10 +88,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 var XMLFirmar = new FirmarINFILE()
                 {
                     // NOTA: en la firma se utiliza el Token
-                    llave = "445eac926372b195f91fdf6c0ac58fd5",
+                    llave = "1cafce804534d84ae7cbf0bee44e351e",
                     codigo = Referencia,
                     archivo = XMLBase64,
-                    alias = "FARMACARE",
+                    alias = "RAICES_DEMO",
                     es_anulacion = "N"
                 };
 
