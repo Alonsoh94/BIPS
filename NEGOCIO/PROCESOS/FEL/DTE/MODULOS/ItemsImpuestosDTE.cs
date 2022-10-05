@@ -11,15 +11,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
     public class ItemsImpuestosDTE
     {
+        static List<ItemsImpuesto> ListaItemsImpuestos = new List<ItemsImpuesto>();
         BIPSContext dbContext;
         public XmlDocument ModuloItemsImpuestosDTE(XmlDocument DocXML, string dte, long IdItem,XmlNode Item)
         {
-            List<ItemsImpuesto> ListaItemsImpuestos = new List<ItemsImpuesto>();
+            
             try
             {
                 using(dbContext = new BIPSContext())
                 {
-                    ListaItemsImpuestos = dbContext.ItemsImpuestos.Where(i => i.Id == IdItem).ToList<ItemsImpuesto>();
+                    ListaItemsImpuestos = dbContext.ItemsImpuestos.Where(i => i.ItemsPedidoPv == IdItem).ToList();
                 }
 
             }

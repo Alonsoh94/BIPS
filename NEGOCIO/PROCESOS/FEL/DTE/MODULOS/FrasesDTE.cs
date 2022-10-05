@@ -17,7 +17,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         BIPSContext dbContext;
 
 
-        public XmlDocument ModuloFrasesDTE(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloFrasesDTE(XmlDocument DocXML, string dte, long Id)
         {
             List<FrasesEscenariosFiscale> FrasesDTEList = new List<FrasesEscenariosFiscale>();
             NodosInterface node = new DatosGeneralesDTE();

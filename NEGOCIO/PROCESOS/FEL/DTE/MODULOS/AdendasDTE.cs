@@ -14,7 +14,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         
         BIPSContext dbContext;
 
-        public XmlDocument ModuloAdendasDTE(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloAdendasDTE(XmlDocument DocXML, string dte, long Id)
         {
             List<Adendum> ListaAdendas = new List<Adendum>();
             NodosInterface nodo = new EstructuraDTE();

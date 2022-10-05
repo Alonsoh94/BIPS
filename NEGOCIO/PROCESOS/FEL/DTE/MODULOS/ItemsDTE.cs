@@ -16,7 +16,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         PedidoPv oPedido;
         TipoDocumentoFiscal oDoctoFiscal;
         BIPSContext dbContext;
-        public XmlDocument ModuloItemsDTE(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloItemsDTE(XmlDocument DocXML, string dte, long Id)
         {
           List<ItemsPedidoPv> items = new List<ItemsPedidoPv>();
             NodosInterface nodoEstructura = new EstructuraDTE();
@@ -87,6 +87,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                         Precio.InnerText = Convert.ToString(item.Precio);
                         //decimal Precio = Convert.ToDecimal(MIItem[8]);
 
+                        if (item.Descuento == null) item.Descuento = 0;
                         XmlNode Descuento = DocXML.CreateElement("dte", "Descuento", dte);
                         NItem.AppendChild(Descuento);
                         Descuento.InnerText = Convert.ToString(item.Descuento);
@@ -98,8 +99,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                         if (oDoctoFiscal.Nomenclatura != "NABN")
                         {
                             ItemsImpuestosDTE oItemImpuestos = new ItemsImpuestosDTE();
-                            oItemImpuestos.ModuloItemsImpuestosDTE(DocXML, dte, item.Id,NItems);
+                            oItemImpuestos.ModuloItemsImpuestosDTE(DocXML, dte, item.Id, NItem);
                         }
+
+                        if (item.Descuento == null) item.Descuento = 0;
+                        
 
                         XmlNode NTotal = DocXML.CreateElement("dte", "Total", dte);
                         NItem.AppendChild(NTotal);

@@ -19,7 +19,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         Paise oPaisCliente;
         
 
-        public XmlDocument ModuloReceptorDTE(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloReceptorDTE(XmlDocument DocXML, string dte, long Id)
         {
             NodosInterface nodo = new EstructuraDTE();
             DatosEmision = nodo.NodoDatosEmision();

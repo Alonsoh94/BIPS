@@ -24,7 +24,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         static Empresa DatosEmpresa;
 
 
-        public XmlDocument ModuloEmisorDTE(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloEmisorDTE(XmlDocument DocXML, string dte, long Id)
         {
             
             NodosInterface nodos = new EstructuraDTE();

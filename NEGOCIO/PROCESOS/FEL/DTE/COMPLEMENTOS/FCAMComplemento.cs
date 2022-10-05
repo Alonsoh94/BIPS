@@ -22,7 +22,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
         XmlNode DatosEmision;
         BIPSContext dbContext;
 
-        public void FCAMComplementoXML(XmlDocument DocXML, string dte, int Id, string xsi, string cex)
+        public void FCAMComplementoXML(XmlDocument DocXML, string dte, long Id, string xsi, string cex)
         {
             NodosInterface nodos = new EstructuraDTE();
             NodosInterface DatosGenerales = new DatosGeneralesDTE();

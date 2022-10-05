@@ -19,7 +19,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
       
         public XmlDocument CrearEstructuraXML()
         {
-            int prueba;
+           // int prueba;
             // Declaraciones de URLS
             XmlDocument DocXML = new XmlDocument();
 

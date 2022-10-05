@@ -13,6 +13,6 @@ namespace BIPS.MODELOS
         public DateTime? FechaEmisionDocumentoOrigen { get; set; }
         public string? MotivoAjuste { get; set; }
         public string? NumeroAutorizacionDocumentoOrigen { get; set; }
-        public decimal? Version { get; set; }
+        public string? Version { get; set; }
     }
 }

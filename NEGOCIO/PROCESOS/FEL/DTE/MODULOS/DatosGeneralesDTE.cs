@@ -2,11 +2,13 @@
 using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -19,7 +21,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         static string CodigoRef;
         NodosInterface Nodos = new EstructuraDTE();
             
-       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte, int id)
+       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte, long id)
        {
             XmlNode DatosEmision;
             Monedum oMoneda;
@@ -70,9 +72,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 string CentroAmerica = "CST";
 
                 TimeZoneInfo ZonaHorariaGuatemala = TimeZoneInfo.FindSystemTimeZoneById(CentroAmerica);
-                DateTime NewFecha = TimeZoneInfo.ConvertTimeToUtc(oPedido.Fecha, ZonaHorariaGuatemala);                
+                DateTime NewFecha = TimeZoneInfo.ConvertTimeToUtc(oPedido.Fecha, ZonaHorariaGuatemala);
+
+
+
+                //string FechaEmisionDoc = oPedido.Fecha.ToString("yyyy-MM-ddTHH:mm:ss.fffzz:ff");
+                string FechaEmisionDoc = oPedido.Fecha.ToString("yyyy-MM-ddTHH:mm:ss");
+                FechaEmisionDoc = $"{FechaEmisionDoc}.000-06:00";
+
                 XmlAttribute FechaHoraEmision = Documento.CreateAttribute("FechaHoraEmision");
-                FechaHoraEmision.Value = Convert.ToString(NewFecha);
+                FechaHoraEmision.Value = Convert.ToString(FechaEmisionDoc);
                 NDatosGenerales.Attributes.Append(FechaHoraEmision);
 
                 XmlAttribute Tipo = Documento.CreateAttribute("Tipo");

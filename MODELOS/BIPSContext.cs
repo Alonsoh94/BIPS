@@ -41,7 +41,7 @@ namespace BIPS.MODELOS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
+                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
             }
         }
 
@@ -235,8 +235,6 @@ namespace BIPS.MODELOS
             {
                 entity.ToTable("ComplementoNOTAS");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.FechaEmisionDocumentoOrigen).HasColumnType("datetime");
 
                 entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
@@ -258,7 +256,10 @@ namespace BIPS.MODELOS
                     .IsUnicode(false)
                     .HasColumnName("URIComplemento");
 
-                entity.Property(e => e.Version).HasColumnType("decimal(4, 2)");
+                entity.Property(e => e.Version)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength();
             });
 
             modelBuilder.Entity<ConfiguracionesFel>(entity =>
@@ -511,7 +512,9 @@ namespace BIPS.MODELOS
 
                 entity.Property(e => e.Descripcion).HasColumnType("text");
 
-                entity.Property(e => e.Descuento).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Descuento)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Fecha).HasColumnType("datetime");
 

@@ -17,7 +17,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         TipoDocumentoFiscal oTipoDocumentoFiscal;
         BIPSContext dbContext;
 
-        public XmlDocument ModuloTotales(XmlDocument DocXML, string dte, int Id)
+        public XmlDocument ModuloTotales(XmlDocument DocXML, string dte, long Id)
         {
             List<ImpuestosPedido> ListaImpuestosPedidos = new List<ImpuestosPedido>();
 
