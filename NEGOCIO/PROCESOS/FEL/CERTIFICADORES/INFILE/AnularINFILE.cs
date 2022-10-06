@@ -8,5 +8,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
 {
     public class AnularINFILE
     {
+        public Task AnularInfile()
+        {
+
+            return Task.FromResult(0);
+        }
     }
 }

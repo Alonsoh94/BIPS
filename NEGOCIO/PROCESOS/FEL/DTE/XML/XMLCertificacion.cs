@@ -21,6 +21,8 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         string ds = "http://www.w3.org/2000/09/xmldsig#";
         string cex = "http://www.sat.gob.gt/face2/ComplementoExportaciones/0.1.0";
         string cno = "http://www.sat.gob.gt/face2/ComplementoReferenciaNota/0.1.0";
+        string cfc = "http://www.sat.gob.gt/dte/fel/CompCambiaria/0.1.0";
+        string cfe = "http://www.sat.gob.gt/face2/ComplementoFacturaEspecial/0.1.0";
 
         string URIComplementoNCRE = "http://www.sat.gob.gt/face2/ComplementoReferenciaNota/0.1.0";
 
@@ -37,6 +39,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
             AdendasDTE oAdendasDTE = new AdendasDTE();
             FCAMComplemento oFCAMComplemento = new FCAMComplemento();
             NCREComplemento oNCREComplemento = new NCREComplemento();
+            FESPComplemento oFESPComplemento = new();
 
 
 
@@ -65,11 +68,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 case "FCAM": // FACTURA CAMBIARIA
                     if (oPedido.LocalOexportacion == false)
                     {
-                        ConstruirXLMFCAM();
+                        ConstruirXLMFCAM(); // FCAM con exportacion
                     }
                     else
                     {
-                        ConstruirXLMFCAM();
+                        ConstruirXLMFCAM(); // FCAM Local
                     }
 
                     break;
@@ -82,7 +85,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                     break;
                 //FACTURAS ESPECIALES, NOTA DE ABONO Y RECIBO
                 case "FESP":
-
+                    ConstruirXLMFESP();
                     
                     break;
                 case "NABN":
@@ -98,11 +101,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                     break;
                 //NOTAS DE CRÉDITO Y DÉBITO
                 case "NDEB":
-
-                    
+                    ConstruirXLMNDEB();
                     break;
                 case "NCRE":
-
                     ConstruirXLMNCRE();
                     break;
                 default:
@@ -128,25 +129,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
                 
                 ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
-                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\MISXML\SP\FACTBIPS.xml");
-            }
-            #endregion
-
-            #region Construir XML tipo FCAM
-            void ConstruirXLMFCAM()
-            {
-                DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
-                oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
-                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
-                oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
-                oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
-                oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
-                oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
-                oFCAMComplemento.FCAMComplementoXML(DocumentoXML, dte, id,xsi,cex);
-                DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
-
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
-                //DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACT.xml");
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
 
@@ -164,7 +147,59 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
 
                 ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
-                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\MISXML\SP\FACTBIPS.xml");
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
+            }
+            #endregion
+
+            #region Construir XML tipo NDEB  
+            void ConstruirXLMNDEB() /// Deberan incluirse la frases y escenarios posteriormente
+            {
+                DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
+                oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
+                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
+                oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
+                //oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
+                oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
+                oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
+                oNCREComplemento.ComplementoNCRE(DocumentoXML, dte, id, cno, xsi);
+                DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
+
+                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
+            }
+            #endregion
+
+            #region Construir XML tipo FCAM  
+            void ConstruirXLMFCAM() /// Factura cambiaria tanto local como exportacion
+            {
+                DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
+                oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
+                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
+                oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
+                oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
+                oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
+                oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
+                oFCAMComplemento.FCAMComplementoXML(DocumentoXML, dte, id, xsi,cex,cfc);
+                DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
+
+                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
+            }
+            #endregion
+
+            #region Construir XML tipo FESP  
+            void ConstruirXLMFESP() /// Factura Especial
+            {
+                DocumentoXML = oEstructuraDTE.CrearEstructuraXML();
+                oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
+                oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
+                oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
+                ///oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id); De Momento no inclye frases
+                oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
+                oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
+                oFESPComplemento.ComplementoFESPXML(DocumentoXML, dte, id,xsi,cfe);
+                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
 

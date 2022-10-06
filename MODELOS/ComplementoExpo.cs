@@ -10,7 +10,7 @@ namespace BIPS.MODELOS
         public int Idcomplemento { get; set; }
         public string NombreComplemento { get; set; } = null!;
         public string Uricomplemento { get; set; } = null!;
-        public decimal Version { get; set; }
+        public string Version { get; set; } = null!;
         public string NombreConsignatarioOdestinatario { get; set; } = null!;
         public string DireccionConsignatarioOdestinatario { get; set; } = null!;
         public string NombreComprador { get; set; } = null!;

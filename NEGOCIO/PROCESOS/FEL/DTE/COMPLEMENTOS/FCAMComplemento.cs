@@ -22,7 +22,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
         XmlNode DatosEmision;
         BIPSContext dbContext;
 
-        public void FCAMComplementoXML(XmlDocument DocXML, string dte, long Id, string xsi, string cex)
+        public void FCAMComplementoXML(XmlDocument DocXML, string dte, long Id, string xsi, string cex, string cfc)
         {
             NodosInterface nodos = new EstructuraDTE();
             NodosInterface DatosGenerales = new DatosGeneralesDTE();
@@ -32,16 +32,18 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
             XmlNode NComplementos = DocXML.CreateElement("dte", "Complementos", dte);
             DatosEmision.AppendChild(NComplementos);
         
-            if(oPedido.LocalOexportacion == false)
+            
             try
             {
-                using (dbContext = new BIPSContext())
+                if (oPedido.LocalOexportacion == false)
                 {
-                    if (dbContext.ComplementoExpos.Any(e => e.PedidoPv == oPedido.Id))
+                    using (dbContext = new BIPSContext())
                     {
-                       oComplementoExpo = dbContext.ComplementoExpos.Where(e => e.PedidoPv == oPedido.Id).FirstOrDefault<ComplementoExpo>();
+                        if (dbContext.ComplementoExpos.Any(e => e.PedidoPv == oPedido.Id))
+                        {
+                            oComplementoExpo = dbContext.ComplementoExpos.Where(e => e.PedidoPv == oPedido.Id).FirstOrDefault<ComplementoExpo>();
+                        }
                     }
-                }
 
                     // NODO COMPLEMENTO
                     XmlNode NodoComplemento = DocXML.CreateElement("dte", "Complemento", dte);
@@ -67,7 +69,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
 
 
                     XmlAttribute NVersionExp = DocXML.CreateAttribute("Version");
-                    NVersionExp.Value = Convert.ToString(oComplementoExpo.Version);
+                    NVersionExp.Value = Convert.ToString(oComplementoExpo.Version.Trim());
                     NExportacion.Attributes.Append(NVersionExp);
 
                     if ("******" == "INFILE")
@@ -118,7 +120,83 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
                     XmlNode CodigoExportador = DocXML.CreateElement("cex", "CodigoExportador", cex);
                     NExportacion.AppendChild(CodigoExportador);
                     CodigoExportador.InnerText = Convert.ToString(oComplementoExpo.CodigoExportador.Trim());
+
                 }
+               
+
+                    
+             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            try
+            {
+                using (dbContext = new BIPSContext())
+                {
+                    if (dbContext.ComplementoFcams.Any(e => e.PedidoPv == oPedido.Id))
+                    {
+                        oComplementoFcam = dbContext.ComplementoFcams.Where(e => e.PedidoPv == oPedido.Id).FirstOrDefault();
+                    }
+                }
+
+
+                XmlNode NodoComplemento = DocXML.CreateElement("dte", "Complemento", dte);
+                NComplementos.AppendChild(NodoComplemento);
+
+                XmlAttribute AIDComplemento = DocXML.CreateAttribute("IDComplemento");
+                AIDComplemento.Value = Convert.ToString(oComplementoFcam.Idcomplemento);
+                NodoComplemento.Attributes.Append(AIDComplemento);
+
+                XmlAttribute ANombreComplemento = DocXML.CreateAttribute("NombreComplemento");
+                ANombreComplemento.Value = Convert.ToString(oComplementoFcam.NombreComplemento.Trim());
+                NodoComplemento.Attributes.Append(ANombreComplemento);
+
+                XmlAttribute URIComplemento = DocXML.CreateAttribute("URIComplemento");
+                URIComplemento.Value = Convert.ToString(oComplementoFcam.Uricomplemento.Trim());
+                NodoComplemento.Attributes.Append(URIComplemento);
+
+                //NODO ABONO FACTURA CAMBIARIA
+
+                XmlNode NAbonosFacturaCambiaria = DocXML.CreateElement("cfc", "AbonosFacturaCambiaria", "cfc");
+                NodoComplemento.AppendChild(NAbonosFacturaCambiaria);
+
+                XmlAttribute Nxmlnscfc = DocXML.CreateAttribute("xmlns:cfc");
+                Nxmlnscfc.Value = cfc;
+                NAbonosFacturaCambiaria.Attributes.Append(Nxmlnscfc);
+
+                XmlAttribute NVersionFCAM = DocXML.CreateAttribute("Version");
+                NVersionFCAM.Value = "1";
+                NAbonosFacturaCambiaria.Attributes.Append(NVersionFCAM);
+
+                if ("***********" == "INFILE")
+                {
+                    XmlAttribute AschemaLocation = DocXML.CreateAttribute("xsi", "schemaLocation", xsi);
+                    AschemaLocation.Value = @"http://www.sat.gob.gt/dte/fel/CompCambiaria/0.1.0 C:\Users\FEL\Desktop\Esquemas\GT_Complemento_Cambiaria-0.1.0.xsd";
+                    NAbonosFacturaCambiaria.Attributes.Append(AschemaLocation);
+
+                }
+
+
+                //NODO ABONO
+                XmlNode NAbono = DocXML.CreateElement("cfc", "Abono", cfc);
+                NAbonosFacturaCambiaria.AppendChild(NAbono);
+
+                XmlNode NNumeroAbono = DocXML.CreateElement("cfc", "NumeroAbono", cfc);  //NODO Numero ABONO
+                NAbono.AppendChild(NNumeroAbono);
+                NNumeroAbono.InnerText = Convert.ToString(oComplementoFcam.NumeroAbono);
+
+                XmlNode NFechaVencimiento = DocXML.CreateElement("cfc", "FechaVencimiento", cfc);  //NODO Fecha Vencimiento
+                NAbono.AppendChild(NFechaVencimiento);
+                NFechaVencimiento.InnerText = Convert.ToDateTime(oComplementoFcam.FechaVencimiento).ToString("yyyy-MM-dd"); // Convert.ToString(item.FechaVencimiento.ToString("yyyy-MM-dd"));
+
+                XmlNode NMontoAbono = DocXML.CreateElement("cfc", "MontoAbono", cfc);  //NODO Numero ABONO
+                NAbono.AppendChild(NMontoAbono);
+                NMontoAbono.InnerText = Convert.ToString(oComplementoFcam.MontoAbono);
+
+            }
             catch (Exception)
             {
 

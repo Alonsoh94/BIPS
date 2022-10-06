@@ -101,3 +101,4 @@ C:\Users\Jose Alonso\Documents\BIPS\obj\Debug\net6.0-windows\ref\BIPS.dll
 C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\bin\Debug\net6.0-windows\RestSharp.dll
 C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\RestSharp.dll
 C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\Microsoft.Extensions.Http.dll
+C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\bin\Debug\net6.0-windows\Microsoft.Extensions.Http.dll

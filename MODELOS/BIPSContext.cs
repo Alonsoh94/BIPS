@@ -41,7 +41,7 @@ namespace BIPS.MODELOS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
             }
         }
 
@@ -110,8 +110,6 @@ namespace BIPS.MODELOS
             {
                 entity.ToTable("ComplementoEXPO");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.CodigoComprador)
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -162,7 +160,10 @@ namespace BIPS.MODELOS
                     .IsUnicode(false)
                     .HasColumnName("URIComplemento");
 
-                entity.Property(e => e.Version).HasColumnType("decimal(4, 2)");
+                entity.Property(e => e.Version)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.PedidoPvNavigation)
                     .WithMany(p => p.ComplementoExpos)
@@ -203,11 +204,11 @@ namespace BIPS.MODELOS
             {
                 entity.ToTable("ComplementoFESP");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Idcomplemento).HasColumnName("IDComplemento");
 
-                entity.Property(e => e.NombreComplemento).HasMaxLength(50);
+                entity.Property(e => e.NombreComplemento)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.RetencionIsr)
                     .HasColumnType("decimal(10, 2)")
@@ -223,6 +224,11 @@ namespace BIPS.MODELOS
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("URIComplemento");
+
+                entity.Property(e => e.Version)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.PedidoPvNavigation)
                     .WithMany(p => p.ComplementoFesps)
