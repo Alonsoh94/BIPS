@@ -26,6 +26,7 @@ namespace BIPS.MODELOS
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Establecimiento> Establecimientos { get; set; } = null!;
+        public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<FrasesEscenariosFiscale> FrasesEscenariosFiscales { get; set; } = null!;
         public virtual DbSet<ImpuestosPedido> ImpuestosPedidos { get; set; } = null!;
         public virtual DbSet<ItemsImpuesto> ItemsImpuestos { get; set; } = null!;
@@ -41,7 +42,7 @@ namespace BIPS.MODELOS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
+                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
             }
         }
 
@@ -450,6 +451,78 @@ namespace BIPS.MODELOS
                     .HasForeignKey(d => d.Municipio)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Establecimiento_Municipio");
+            });
+
+            modelBuilder.Entity<Factura>(entity =>
+            {
+                entity.ToTable("Factura");
+
+                entity.Property(e => e.FechaAnulado).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCertificado).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaFacturacion).HasColumnType("datetime");
+
+                entity.Property(e => e.Nit)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("NIT");
+
+                entity.Property(e => e.NumeroAutorizacionA)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroAutorizacionC)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroDoctoA)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroDoctoC)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SerieA)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SerieC)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TipoCambio).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.TipoCargoCxc).HasColumnName("TipoCargoCXC");
+
+                entity.Property(e => e.ValorIva).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.ValorTotal).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.ClienteNavigation)
+                    .WithMany(p => p.Facturas)
+                    .HasForeignKey(d => d.Cliente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Factura_Cliente");
+
+                entity.HasOne(d => d.EstablecimientoNavigation)
+                    .WithMany(p => p.Facturas)
+                    .HasForeignKey(d => d.Establecimiento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Factura_Establecimiento");
+
+                entity.HasOne(d => d.MonedaNavigation)
+                    .WithMany(p => p.Facturas)
+                    .HasForeignKey(d => d.Moneda)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Factura_Moneda");
+
+                entity.HasOne(d => d.PedidoPvNavigation)
+                    .WithMany(p => p.Facturas)
+                    .HasForeignKey(d => d.PedidoPv)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Factura_PedidoPv");
             });
 
             modelBuilder.Entity<FrasesEscenariosFiscale>(entity =>

@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Numerics;
+using Microsoft.VisualBasic.ApplicationServices;
+using BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
 {
@@ -25,6 +27,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
         string cfe = "http://www.sat.gob.gt/face2/ComplementoFacturaEspecial/0.1.0";
 
         string URIComplementoNCRE = "http://www.sat.gob.gt/face2/ComplementoReferenciaNota/0.1.0";
+
+        static ConfiguracionesFel oConfiFel = new();
+
 
         public void GenerarXMLCertificacion(long id)
         {
@@ -48,12 +53,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
 
             PedidoPv oPedido = new PedidoPv();
             TipoDocumentoFiscal tipoDocto = new();
+            Establecimiento oEstablecimiento = new();
+            
             using (BIPSContext dbContext = new())
             {
                 if(dbContext.PedidoPvs.Any(p => p.Id == id))
                 {
                     oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault();
                     tipoDocto = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault();
+                    oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault();
+                    oConfiFel = dbContext.ConfiguracionesFels.Where(c => c.Empresa == oEstablecimiento.Empresa).FirstOrDefault();
                 }
             }
 
@@ -127,8 +136,15 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
                 oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
-                
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+
+                if (oConfiFel.Certificador == "INFILE")
+                {
+                    ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                }
+                else if (oConfiFel.Certificador == "MEGAPRINT")
+                {
+                    ProcesoCertificacionMEGAPRINT(DocumentoXML.OuterXml);
+                }
                 DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
@@ -146,7 +162,14 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oNCREComplemento.ComplementoNCRE(DocumentoXML, dte, id,cno,xsi);
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
 
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                if (oConfiFel.Certificador == "INFILE")
+                {
+                    ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                }
+                else if (oConfiFel.Certificador == "MEGAPRINT")
+                {
+                    ProcesoCertificacionMEGAPRINT(DocumentoXML.OuterXml);
+                }
                 DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
@@ -164,7 +187,14 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oNCREComplemento.ComplementoNCRE(DocumentoXML, dte, id, cno, xsi);
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
 
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                if (oConfiFel.Certificador == "INFILE")
+                {
+                    ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                }
+                else if (oConfiFel.Certificador == "MEGAPRINT")
+                {
+                    ProcesoCertificacionMEGAPRINT(DocumentoXML.OuterXml);
+                }
                 DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
@@ -182,8 +212,19 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oFCAMComplemento.FCAMComplementoXML(DocumentoXML, dte, id, xsi,cex,cfc);
                 DocumentoXML = oAdendasDTE.ModuloAdendasDTE(DocumentoXML, dte, id);
 
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                if(oConfiFel.Certificador == "INFILE")
+                {
+                    ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                }
+                else if(oConfiFel.Certificador == "MEGAPRINT")
+                {
+                    ProcesoCertificacionMEGAPRINT(DocumentoXML.OuterXml);
+                }
+                
                 DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
+                
+
+            
             }
             #endregion
 
@@ -198,7 +239,14 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
                 oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
                 oFESPComplemento.ComplementoFESPXML(DocumentoXML, dte, id,xsi,cfe);
-                ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                if (oConfiFel.Certificador == "INFILE")
+                {
+                    ProcesoCertificacionINFILE(DocumentoXML.OuterXml, oDatosGeneralesDTE.CodigoReferencia());
+                }
+                else if (oConfiFel.Certificador == "MEGAPRINT")
+                {
+                    ProcesoCertificacionMEGAPRINT(DocumentoXML.OuterXml);
+                }
                 DocumentoXML.Save(@"C:\Users\Jose Alonso\Documents\XML\FACTBIPS.xml");
             }
             #endregion
@@ -258,6 +306,38 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
 
             }
 
+            async void ProcesoCertificacionMEGAPRINT(String XMLTexto)
+            {
+                FirmarMP oFirmarMP = new FirmarMP();
+                byte[] XMLByte = Encoding.UTF8.GetBytes(XMLTexto);
+                string XMLBase64 = Convert.ToBase64String(XMLByte);
+                bool ResultadoFirma;
+
+                DateTime hoy = DateTime.Now;
+                if( hoy <= oConfiFel.ExpiraToken )
+                {
+                    ResultadoFirma = await oFirmarMP.FirmarDocumento(XMLTexto, "89502A74-0462-4434-B10C-FEEEB862330A", oConfiFel);
+                }
+                else
+                {
+                    RequestTokenMP oRequestTokenMP = new();
+
+                    if (await oRequestTokenMP.RequestToken(oConfiFel))
+                    {
+
+                    }
+                }
+
+            }
+
+
+
         }
+
+        public async Task GenerarFactura()
+        {
+
+
+        } 
     }
 }

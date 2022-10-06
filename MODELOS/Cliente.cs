@@ -7,6 +7,7 @@ namespace BIPS.MODELOS
     {
         public Cliente()
         {
+            Facturas = new HashSet<Factura>();
             PedidoPvs = new HashSet<PedidoPv>();
         }
 
@@ -23,6 +24,7 @@ namespace BIPS.MODELOS
 
         public virtual Empresa EmpresaNavigation { get; set; } = null!;
         public virtual Municipio MunicipioNavigation { get; set; } = null!;
+        public virtual ICollection<Factura> Facturas { get; set; }
         public virtual ICollection<PedidoPv> PedidoPvs { get; set; }
     }
 }

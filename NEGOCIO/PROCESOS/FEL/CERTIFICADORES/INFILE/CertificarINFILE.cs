@@ -31,7 +31,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                     requestMessage.Headers.Add("Accept", "application/json");
                     requestMessage.Headers.Add("Method", "POST");
                     requestMessage.Headers.Add("usuario", "RAICES_DEMO");
-                    requestMessage.Headers.Add("identificador", "FCAM-478533");
+                    requestMessage.Headers.Add("identificador", "FACT-478533");
                     requestMessage.Headers.Add("llave", "531C11258CF567F5985AB5F8C910B0D6");
                     requestMessage.Content = new StringContent(ObjCertificarJson, Encoding.UTF8, "application/json");
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 {
-    internal class TokenMP
+    internal class CertificarMP
     {
     }
 }

@@ -48,13 +48,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             Version.Value = "0.1";
             GTDocumento.Attributes.Append(Version);
 
-            if (true)
-            {
-                XmlAttribute xsischemaLocation = DocXML.CreateAttribute("xsi", "schemaLocation", xsi);
-                xsischemaLocation.Value = "http://www.sat.gob.gt/dte/fel/0.2.0";
-                GTDocumento.Attributes.Append(xsischemaLocation);
-
-            }
+           // if (false)
+           // {
+           //     XmlAttribute xsischemaLocation = DocXML.CreateAttribute("xsi", "schemaLocation", xsi);
+           //     xsischemaLocation.Value = "http://www.sat.gob.gt/dte/fel/0.2.0";
+           //     GTDocumento.Attributes.Append(xsischemaLocation);
+           //
+           // }
             // Fin de Atributos GTDocumento
 
 
