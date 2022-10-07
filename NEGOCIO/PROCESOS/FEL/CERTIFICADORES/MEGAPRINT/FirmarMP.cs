@@ -14,10 +14,12 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
     public class FirmarMP
     {
 
-        public async Task <bool> FirmarDocumento(string XMLString, string UuiReferencia, ConfiguracionesFel oConfiFel)
+        public async Task <bool> FirmarDocumento(XmlDocument DoctoToSign, string UuiReferencia, ConfiguracionesFel oConfiFel)
         {
             bool ResultadoRequest = false;
             XmlDocument DocFirmar = new XmlDocument();
+
+            string Dataxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<dte:GTDocumento xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:dte=\"http://www.sat.gob.gt/dte/fel/0.2.0\" Version=\"0.1\">\r\n  <dte:SAT ClaseDocumento=\"dte\">\r\n    <dte:DTE ID=\"DatosCertificados\">\r\n      <dte:DatosEmision ID=\"DatosEmision\">\r\n        <dte:DatosGenerales CodigoMoneda=\"GTQ\" FechaHoraEmision=\"2022-10-03T00:00:00.000-06:00\" Tipo=\"FACT\" />\r\n        <dte:Emisor AfiliacionIVA=\"GEN\" CodigoEstablecimiento=\"1\" CorreoEmisor=\"jose.alonso@sidgt.com\" NITEmisor=\"109641035\" NombreComercial=\"INVERSIONES MORALES GARCÍA, S.A.\" NombreEmisor=\"JULIO CESAR ANDRINO GARCIA\">\r\n          <dte:DireccionEmisor>\r\n            <dte:Direccion>0 AVENIDA 0-11 ZONA 1 LOCAL A</dte:Direccion>\r\n            <dte:CodigoPostal>20022</dte:CodigoPostal>\r\n            <dte:Municipio>EL PROGRESO</dte:Municipio>\r\n            <dte:Departamento>JUTIAPA</dte:Departamento>\r\n            <dte:Pais>GT</dte:Pais>\r\n          </dte:DireccionEmisor>\r\n        </dte:Emisor>\r\n        <dte:Receptor CorreoReceptor=\"jose.alonso@sidgt.com\" IDReceptor=\"29842174\" NombreReceptor=\"AMPARO NAVAS\">\r\n          <dte:DireccionReceptor>\r\n            <dte:Direccion>EL PROGRESO, JUTIAPA</dte:Direccion>\r\n            <dte:CodigoPostal>22002</dte:CodigoPostal>\r\n            <dte:Municipio>GUATEMALA</dte:Municipio>\r\n            <dte:Departamento>GUATEMALA</dte:Departamento>\r\n            <dte:Pais>GT</dte:Pais>\r\n          </dte:DireccionReceptor>\r\n        </dte:Receptor>\r\n        <dte:Frases>\r\n          <dte:Frase CodigoEscenario=\"1\" TipoFrase=\"1\" />\r\n          <dte:Frase CodigoEscenario=\"9\" TipoFrase=\"4\" />\r\n        </dte:Frases>\r\n        <dte:Items>\r\n          <dte:Item NumeroLinea=\"1\" BienOServicio=\"B\">\r\n            <dte:Cantidad>1.0000</dte:Cantidad>\r\n            <dte:UnidadMedida>UNI</dte:UnidadMedida>\r\n            <dte:Descripcion>*  MONTELUKAST 10MG FARMANDINA X 10 TAB DUO|INICIAL</dte:Descripcion>\r\n            <dte:PrecioUnitario>143.3200</dte:PrecioUnitario>\r\n            <dte:Precio>143.32</dte:Precio>\r\n            <dte:Descuento>0.00</dte:Descuento>\r\n            <dte:Impuestos>\r\n              <dte:Impuesto>\r\n                <dte:NombreCorto>IVA</dte:NombreCorto>\r\n                <dte:CodigoUnidadGravable>2</dte:CodigoUnidadGravable>\r\n                <dte:MontoGravable>143.32</dte:MontoGravable>\r\n                <dte:MontoImpuesto>0.00</dte:MontoImpuesto>\r\n              </dte:Impuesto>\r\n            </dte:Impuestos>\r\n            <dte:Total>143.32</dte:Total>\r\n          </dte:Item>\r\n          <dte:Item NumeroLinea=\"2\" BienOServicio=\"B\">\r\n            <dte:Cantidad>1.0000</dte:Cantidad>\r\n            <dte:UnidadMedida>UNI</dte:UnidadMedida>\r\n            <dte:Descripcion> TINTE KUUL 6 RUBIO OSCURO|INICIAL</dte:Descripcion>\r\n            <dte:PrecioUnitario>25.0000</dte:PrecioUnitario>\r\n            <dte:Precio>25.00</dte:Precio>\r\n            <dte:Descuento>0.00</dte:Descuento>\r\n            <dte:Impuestos>\r\n              <dte:Impuesto>\r\n                <dte:NombreCorto>IVA</dte:NombreCorto>\r\n                <dte:CodigoUnidadGravable>1</dte:CodigoUnidadGravable>\r\n                <dte:MontoGravable>22.32</dte:MontoGravable>\r\n                <dte:MontoImpuesto>2.68</dte:MontoImpuesto>\r\n              </dte:Impuesto>\r\n            </dte:Impuestos>\r\n            <dte:Total>25.00</dte:Total>\r\n          </dte:Item>\r\n        </dte:Items>\r\n        <dte:Totales>\r\n          <dte:TotalImpuestos>\r\n            <dte:TotalImpuesto NombreCorto=\"IVA\" TotalMontoImpuesto=\"2.68\" />\r\n          </dte:TotalImpuestos>\r\n          <dte:GranTotal>168.32</dte:GranTotal>\r\n        </dte:Totales>\r\n      </dte:DatosEmision>\r\n    </dte:DTE>\r\n    <dte:Adenda>\r\n      <no_interno>A-474211</no_interno>\r\n      <establecimiento>CENTRO FARMACIA</establecimiento>\r\n      <nota_pedido>P. 16414</nota_pedido>\r\n      <vendedor>8</vendedor>\r\n      <forma_pago>CO</forma_pago>\r\n      <dias_credito>0</dias_credito>\r\n      <observaciones>Valor Exento:   Q.143.32</observaciones>\r\n    </dte:Adenda>\r\n  </dte:SAT>\r\n</dte:GTDocumento>";
 
 
             XmlNode NodFirmarSGML = DocFirmar.CreateElement("FirmaDocumentoRequest");
@@ -35,7 +37,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 
             XmlNode xml_DTE = DocFirmar.CreateElement("xml_dte");
             NodFirmarSGML.AppendChild(xml_DTE);
-            xml_DTE.InnerXml = $"<![CDATA[{XMLString}]]>";
+            xml_DTE.InnerXml = $"<![CDATA[{Dataxml}]]>";
 
            
 
@@ -45,12 +47,12 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                 {
                 
                     //requestMessage.Headers.Add("Content-Type", "Application/xml");
-                    requestMessage.Headers.Add("Accept", "Application/xml");
+                   // requestMessage.Headers.Add("Accept", "Application/xml");
                     requestMessage.Headers.Add("Method", "POST");
                     requestMessage.Headers.Add("Accept","Application/xml");
                     requestMessage.Headers.Add("Authorization", "Bearer " + oConfiFel.Token);
                     //requestMessage.Content =  new StringContent(DocFirmar.OuterXml);                    
-                    requestMessage.Content = new StringContent( DocFirmar.OuterXml, Encoding.UTF8, "Application/xml");
+                    requestMessage.Content = new StringContent(DocFirmar.InnerXml, Encoding.UTF8, "Application/xml");
 
                     var response = await hCliente.SendAsync(requestMessage);
                     var Contenido = response.Content.ReadAsStringAsync();

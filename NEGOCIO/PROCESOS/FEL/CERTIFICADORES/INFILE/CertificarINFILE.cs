@@ -17,8 +17,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
         public static string? ArchivoReq;
         public static bool ResultadoReq;
         public static string? DescripcionReq;
-        public async Task CertificarDocumento(CertificarINFILE ObjCertificar)
+        static ResponseOK RespuestaCertificada = new();
+        public async Task<bool> CertificarDocumento(CertificarINFILE ObjCertificar)
         {
+             
             var ObjCertificarJson = JsonConvert.SerializeObject(ObjCertificar);
 
             string URI = "https://certificador.feel.com.gt/fel/certificacion/v2/dte";
@@ -48,6 +50,18 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                             ArchivoReq = JsonContent.archivo;
                             ResultadoReq = true;
                             DescripcionReq = JsonContent.descripcion;
+
+                            var objCertificado = new ResponseOK()
+                            {
+                                resultado = JsonContent.resultado,                     
+                                uuid = JsonContent.uuid,
+                                serie = JsonContent.serie,
+                                numero = JsonContent.numero,
+                                xml_certificado = JsonContent.xml_certificado
+                            };
+
+                            RespuestaCertificada = objCertificado;
+                           
                         }
                         else
                         {
@@ -74,7 +88,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                 }
             }
 
-
+            return ResultadoReq;
         }
+
+        public ResponseOK MiCertificacion() => RespuestaCertificada;
     }
 }

@@ -30,7 +30,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
         public static string ArchivoReq;
         public static bool ResultadoReq;
         public static string DescripcionReq;
-        public async Task FirmarDocumento(FirmarINFILE ObjFirmar)
+        public async Task<bool> FirmarDocumento(FirmarINFILE ObjFirmar)
         {
             // Metodo Funcional con RestSharp
             var ObjFirmaJson = JsonConvert.SerializeObject(ObjFirmar);
@@ -78,6 +78,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                 }
             }
 
+            return ResultadoReq;
         }
         public string ArchivoXMLFirmado() => ArchivoReq;
         public string DescripcionXMLFirmado() => DescripcionReq;

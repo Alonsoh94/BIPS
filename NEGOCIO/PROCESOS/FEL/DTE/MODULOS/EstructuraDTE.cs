@@ -26,6 +26,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             XmlNode GTDocumento = DocXML.CreateElement("dte", "GTDocumento", dte);
             DocXML.AppendChild(GTDocumento);
 
+            XmlDeclaration Declaraciones;
+            Declaraciones = DocXML.CreateXmlDeclaration("1.0", null, null);
+            Declaraciones.Encoding = "UTF-8";           
+            DocXML.InsertBefore(Declaraciones, GTDocumento);
+
             //Creacion de Atributos al GTDocumento xmlns:ds xmlns:dte xmlns:xsi  Version  xsi:schemaLocation
             XmlAttribute xmlnsds = DocXML.CreateAttribute("xmlns:ds");
             xmlnsds.Value = ds;
