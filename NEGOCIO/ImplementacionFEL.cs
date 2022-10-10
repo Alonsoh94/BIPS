@@ -10,10 +10,17 @@ namespace BIPS.NEGOCIO
     public class ImplementacionFEL
     {
         XMLCertificacion XMLCertificacion = new();
+        XMLAnulacion oXMLAnulacion = new XMLAnulacion();
         public void ProbarImplementacion()
         {
             int digito = 1;
             XMLCertificacion.GenerarXMLCertificacion(digito);
+        }
+
+        public void ProbarAnulacion()
+        {
+            int digitoA = 22;
+            oXMLAnulacion.GenerarXMLAnulacion(digitoA);
         }
     }
 }

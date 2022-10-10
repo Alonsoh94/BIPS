@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+﻿using BIPS.MODELOS;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -30,18 +31,18 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
         public static string ArchivoReq;
         public static bool ResultadoReq;
         public static string DescripcionReq;
-        public async Task<bool> FirmarDocumento(FirmarINFILE ObjFirmar)
+        public async Task<bool> FirmarDocumento(FirmarINFILE ObjFirmar, ConfiguracionesFel confi)
         {
             // Metodo Funcional con RestSharp
             var ObjFirmaJson = JsonConvert.SerializeObject(ObjFirmar);
-            string URI = "https://signer-emisores.feel.com.gt/sign_solicitud_firmas/firma_xml";
+           // string URI = "https://signer-emisores.feel.com.gt/sign_solicitud_firmas/firma_xml";
 
 
             //********************************
 
             using(HttpClient hCliente = new HttpClient())
             {
-                using(var requestMessage = new HttpRequestMessage(HttpMethod.Post, URI))
+                using(var requestMessage = new HttpRequestMessage(HttpMethod.Post, confi.Urlfirmar.Trim()))
                 {
                    // requestMessage.Headers.Add("Content-Type", "application/json");
                     requestMessage.Headers.Add("Accept", "application/json");

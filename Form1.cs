@@ -8,11 +8,15 @@ namespace BIPS
         {
             InitializeComponent();
         }
-
+        ImplementacionFEL implementacionFEL = new ImplementacionFEL();
         private void button1_Click(object sender, EventArgs e)
-        {
-            ImplementacionFEL implementacionFEL = new ImplementacionFEL();
+        {            
             implementacionFEL.ProbarImplementacion();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            implementacionFEL.ProbarAnulacion();
         }
     }
 }

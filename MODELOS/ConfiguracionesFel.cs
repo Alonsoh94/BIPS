@@ -10,6 +10,7 @@ namespace BIPS.MODELOS
         public string Certificador { get; set; } = null!;
         public string? Usuario { get; set; }
         public string? Calve { get; set; }
+        public string? KeyId { get; set; }
         public string? Token { get; set; }
         public DateTime? ExpiraToken { get; set; }
         public string? Urlfirmar { get; set; }
@@ -22,6 +23,8 @@ namespace BIPS.MODELOS
         public string? UrlretornarXml { get; set; }
         public string? PathXml { get; set; }
         public string? PathPdfgenerado { get; set; }
+        public string? UrlimprimirInfile { get; set; }
+        public string? CorreoCopia { get; set; }
 
         public virtual Empresa EmpresaNavigation { get; set; } = null!;
     }

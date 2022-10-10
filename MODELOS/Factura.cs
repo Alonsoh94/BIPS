@@ -5,7 +5,8 @@ namespace BIPS.MODELOS
 {
     public partial class Factura
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
+        public string? ReferenciaInterna { get; set; }
         public int Establecimiento { get; set; }
         public int TipoCargoCxc { get; set; }
         public int Cliente { get; set; }
@@ -28,10 +29,5 @@ namespace BIPS.MODELOS
         public string? NumeroDoctoA { get; set; }
         public DateTime? FechaAnulado { get; set; }
         public bool EstadoGeneral { get; set; }
-
-        public virtual Cliente ClienteNavigation { get; set; } = null!;
-        public virtual Establecimiento EstablecimientoNavigation { get; set; } = null!;
-        public virtual Monedum MonedaNavigation { get; set; } = null!;
-        public virtual PedidoPv PedidoPvNavigation { get; set; } = null!;
     }
 }

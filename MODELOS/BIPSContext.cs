@@ -42,7 +42,7 @@ namespace BIPS.MODELOS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=JRAH-PC\\SQLEXPRESS; Database=BIPS; User ID =delta; Password=delta;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-1HF8VKS\\SQLEXPRESS; Database=BIPS; User ID =Developer; Password=sql;");
             }
         }
 
@@ -281,7 +281,15 @@ namespace BIPS.MODELOS
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.CorreoCopia)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.ExpiraToken).HasColumnType("datetime");
+
+                entity.Property(e => e.KeyId)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.PathPdfgenerado)
                     .HasMaxLength(150)
@@ -307,6 +315,11 @@ namespace BIPS.MODELOS
                     .HasMaxLength(150)
                     .IsUnicode(false)
                     .HasColumnName("URLFirmar");
+
+                entity.Property(e => e.UrlimprimirInfile)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("URLImprimirInfile");
 
                 entity.Property(e => e.UrlretornarDatos)
                     .HasMaxLength(150)
@@ -484,6 +497,10 @@ namespace BIPS.MODELOS
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ReferenciaInterna)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.SerieA)
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -492,37 +509,13 @@ namespace BIPS.MODELOS
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TipoCambio).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.TipoCambio).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.TipoCargoCxc).HasColumnName("TipoCargoCXC");
 
-                entity.Property(e => e.ValorIva).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.ValorIva).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.ValorTotal).HasColumnType("decimal(18, 0)");
-
-                entity.HasOne(d => d.ClienteNavigation)
-                    .WithMany(p => p.Facturas)
-                    .HasForeignKey(d => d.Cliente)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Factura_Cliente");
-
-                entity.HasOne(d => d.EstablecimientoNavigation)
-                    .WithMany(p => p.Facturas)
-                    .HasForeignKey(d => d.Establecimiento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Factura_Establecimiento");
-
-                entity.HasOne(d => d.MonedaNavigation)
-                    .WithMany(p => p.Facturas)
-                    .HasForeignKey(d => d.Moneda)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Factura_Moneda");
-
-                entity.HasOne(d => d.PedidoPvNavigation)
-                    .WithMany(p => p.Facturas)
-                    .HasForeignKey(d => d.PedidoPv)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Factura_PedidoPv");
+                entity.Property(e => e.ValorTotal).HasColumnType("decimal(18, 2)");
             });
 
             modelBuilder.Entity<FrasesEscenariosFiscale>(entity =>
@@ -657,6 +650,9 @@ namespace BIPS.MODELOS
             {
                 entity.ToTable("PedidoPv");
 
+                entity.HasIndex(e => e.ReferenciaInterna, "IX_PedidoPv")
+                    .IsUnique();
+
                 entity.Property(e => e.AplicaIva)
                     .IsRequired()
                     .HasColumnName("AplicaIVA")
@@ -677,6 +673,10 @@ namespace BIPS.MODELOS
                 entity.Property(e => e.MontoPedido).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.PorcentajeDescuento).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.ReferenciaInterna)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.TotalPedido).HasColumnType("decimal(18, 2)");
 

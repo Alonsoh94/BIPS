@@ -8,7 +8,6 @@ namespace BIPS.MODELOS
         public Monedum()
         {
             Empresas = new HashSet<Empresa>();
-            Facturas = new HashSet<Factura>();
         }
 
         public int Id { get; set; }
@@ -16,6 +15,5 @@ namespace BIPS.MODELOS
         public string Acronimo { get; set; } = null!;
 
         public virtual ICollection<Empresa> Empresas { get; set; }
-        public virtual ICollection<Factura> Facturas { get; set; }
     }
 }
