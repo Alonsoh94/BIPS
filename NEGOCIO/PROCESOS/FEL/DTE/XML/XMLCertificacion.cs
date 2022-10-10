@@ -160,7 +160,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 oDatosGeneralesDTE.ModuloDatosGenerales(DocumentoXML, dte, id);
                 oEmisorDTE.ModuloEmisorDTE(DocumentoXML, dte, id);
                 oReceptorDTE.ModuloReceptorDTE(DocumentoXML, dte, id);
-                //oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
+                oFrasesDTE.ModuloFrasesDTE(DocumentoXML, dte, id);
                 oItemsDTE.ModuloItemsDTE(DocumentoXML, dte, id);
                 oTotalesDTE.ModuloTotales(DocumentoXML, dte, id);
                 oNCREComplemento.ComplementoNCRE(DocumentoXML, dte, id,cno,xsi);

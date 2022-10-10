@@ -2131,11 +2131,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jose Alonso\\Documents\\Visual Studio 2022 Projects\\BIPS\\BIPS.csproj",
+      "projectUniqueName": "C:\\Users\\Jose Alonso\\Documents\\BIPS\\BIPS.csproj",
       "projectName": "BIPS",
-      "projectPath": "C:\\Users\\Jose Alonso\\Documents\\Visual Studio 2022 Projects\\BIPS\\BIPS.csproj",
+      "projectPath": "C:\\Users\\Jose Alonso\\Documents\\BIPS\\BIPS.csproj",
       "packagesPath": "C:\\Users\\Jose Alonso\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jose Alonso\\Documents\\Visual Studio 2022 Projects\\BIPS\\obj\\",
+      "outputPath": "C:\\Users\\Jose Alonso\\Documents\\BIPS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
