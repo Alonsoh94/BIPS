@@ -337,7 +337,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
                 DateTime hoy = DateTime.Now;
                 if( hoy <= oConfiFel.ExpiraToken )
                 {
-                    ResultadoFirma = await oFirmarMP.FirmarDocumento(DoctoXML, oPedido.ReferenciaInterna.Trim(), oConfiFel);
+                    ResultadoFirma = await oFirmarMP.FirmarDocumento(DoctoXML.OuterXml.ToString(), oPedido.ReferenciaInterna.Trim(), oConfiFel);
                 }
                 else
                 {
