@@ -23,11 +23,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML
           //  string nl = "http://www.altova.com/samplexml/other-namespace";
 
             XmlDocument XmlAnulacion = new XmlDocument();
-            Factura oFactura = new Factura();
-            Empresa oEmpresa = new();
-            Establecimiento oEstablecimiento = new();
-            ConfiguracionesFel oConfiFel = new();
-            PedidoPv oPedido = new();
+            Factura? oFactura = new Factura();
+            Empresa? oEmpresa = new();
+            Establecimiento? oEstablecimiento = new();
+            ConfiguracionesFel? oConfiFel = new();
+            PedidoPv? oPedido = new();
             DateTime FechaEmisionPedido = new();
             try
             {                

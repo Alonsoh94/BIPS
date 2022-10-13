@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 {
-    internal class AnularMP
+    public class AnularMP
     {
+        static bool ResultRequest = false;
+        static string MessageRequest = string.Empty;
+        public async Task<bool> AnularDocumento(string XMLString)
+        {
+
+
+
+            return ResultRequest;
+        }
     }
 }

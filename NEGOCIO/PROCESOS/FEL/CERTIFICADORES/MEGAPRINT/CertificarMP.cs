@@ -66,7 +66,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 
                             if (response.IsSuccessStatusCode)
                             {
-
                                 try
                                 {
                                     int TipoRespuesta;
@@ -80,7 +79,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                                         UuidFirmado = Convert.ToString(Queryuuid.FirstOrDefault().Value);
 
                                         var Queryxml = from doc in XMLRespuesta.Elements("RegistraDocumentoXMLResponse").Elements("xml_dte") select doc;
-                                        XMLFirmado = Convert.ToString(Queryxml.FirstOrDefault().Value);                                       
+                                        XMLFirmado = Convert.ToString(Queryxml.FirstOrDefault().Value);
+
+                                        ObtenerPDFMP oPDF = new ObtenerPDFMP();
+                                        oPDF.ImpresionFactura(oConfiFel,UuidFirmado);
                                     }
                                     else
                                     {                                        
@@ -121,7 +123,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
             {
                 RequestResult = false;
                 MessageResult = "Error: " + e.Message;
-
             }
             return RequestResult;
         }
