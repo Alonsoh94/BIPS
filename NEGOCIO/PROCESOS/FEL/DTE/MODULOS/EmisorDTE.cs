@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -13,18 +13,18 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
     public class EmisorDTE
     {
-        Municipio oMunicipioEmisor;
-        Departamento oDepartamentoEmisor;
-        Paise oPaisEmisor;
+       // Municipio oMunicipioEmisor;
+       // Departamento oDepartamentoEmisor;
+       // Paise oPaisEmisor;
 
-        Establecimiento oEstablecimiento = new();
-        PedidoPv oPedido;
+       // Establecimiento oEstablecimiento = new();
+       // PedidoPv oPedido;
         XmlNode DatosEmision;
         BIPSContext dbContext;
-        static Empresa DatosEmpresa;
+       // static Empresa DatosEmpresa;
 
 
-        public XmlDocument ModuloEmisorDTE(XmlDocument DocXML, string dte, long Id)
+        public XmlDocument ModuloEmisorDTE(XmlDocument DocXML, PedidoPv oPedido, Establecimiento oEstablecimiento, Municipio oMunicipioEmisor, Departamento oDepartamentoEmisor, Paise oPaisEmisor, Empresa oEmpresa, string dte, long Id)
         {
             
             NodosInterface nodos = new EstructuraDTE();
@@ -32,58 +32,58 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             DatosEmision = nodos.NodoDatosEmision();
             oPedido = DatosGenerales.PedidoActual();
 
-            Empresa oEmpresa = new Empresa();
-            try
-            {
-                using (dbContext = new BIPSContext())
-                {
-                    if (dbContext.Empresas.Any(e => e.Id == Id))
-                    {
-                        oEmpresa = dbContext.Empresas.Where(e => e.Id == Id).FirstOrDefault();
-                        DatosEmpresa = oEmpresa;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+          //  Empresa oEmpresa = new Empresa();
+          //  try
+          //  {
+          //      using (dbContext = new BIPSContext())
+          //      {
+          //          if (dbContext.Empresas.Any(e => e.Id == Id))
+          //          {
+          //              oEmpresa = dbContext.Empresas.Where(e => e.Id == Id).FirstOrDefault();
+          //              DatosEmpresa = oEmpresa;
+          //          }
+          //      }
+          //  }
+          //  catch (Exception)
+          //  {
+          //      throw;
+          //  }
 
-            try
-            {
-                using (dbContext = new BIPSContext())
-                {
-                    if (dbContext.Establecimientos.Any(e => e.Id == oPedido.Establecimiento))
-                    {
-                        oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
-                    }
-                }
-            }
-            catch (Exception)
-            {
+          //  try
+          //  {
+          //      using (dbContext = new BIPSContext())
+          //      {
+          //          if (dbContext.Establecimientos.Any(e => e.Id == oPedido.Establecimiento))
+          //          {
+          //              oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
+          //          }
+          //      }
+          //  }
+          //  catch (Exception)
+          //  {
+          //
+          //      throw;
+          //  }
 
-                throw;
-            }
-
-            try
-            {
-                using (BIPSContext dbContext = new BIPSContext())
-                {
-                    if (dbContext.Municipios.Any(e => e.Id == oEstablecimiento.Municipio))
-                    {
-                        oMunicipioEmisor = dbContext.Municipios.Where(m => m.Id == oEstablecimiento.Municipio).FirstOrDefault<Municipio>();
-                        oDepartamentoEmisor = dbContext.Departamentos.Where(d => d.Id == oMunicipioEmisor.Departamento).FirstOrDefault<Departamento>();
-                        oPaisEmisor = dbContext.Paises.Where(p => p.Id == oDepartamentoEmisor.Pais).FirstOrDefault<Paise>();
-
-                    }
-
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           // try
+           // {
+           //     using (BIPSContext dbContext = new BIPSContext())
+           //     {
+           //         if (dbContext.Municipios.Any(e => e.Id == oEstablecimiento.Municipio))
+           //         {
+           //             oMunicipioEmisor = dbContext.Municipios.Where(m => m.Id == oEstablecimiento.Municipio).FirstOrDefault<Municipio>();
+           //             oDepartamentoEmisor = dbContext.Departamentos.Where(d => d.Id == oMunicipioEmisor.Departamento).FirstOrDefault<Departamento>();
+           //             oPaisEmisor = dbContext.Paises.Where(p => p.Id == oDepartamentoEmisor.Pais).FirstOrDefault<Paise>();
+           //
+           //         }
+           //
+           //     }
+           // }
+           // catch (Exception)
+           // {
+           //
+           //     throw;
+           // }
 
             try
             {
@@ -153,6 +153,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 
             return DocXML;
         }
-        public Empresa DatosEmpresariales() => DatosEmpresa;
+       // public Empresa DatosEmpresariales() => DatosEmpresa;
     }
 }

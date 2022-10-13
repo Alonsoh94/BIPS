@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,40 +13,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
     {
         XmlNode DatosEmision;
         BIPSContext dbContext;
-        Cliente oCliente;
-        Municipio oMunicipioCliente;
-        Departamento oDepartamentoCliente;
-        Paise oPaisCliente;
         
 
-        public XmlDocument ModuloReceptorDTE(XmlDocument DocXML, string dte, long Id)
+        public XmlDocument ModuloReceptorDTE(XmlDocument DocXML, Cliente oCliente,Municipio oMunicipioCliente, Departamento oDepartamentoCliente, Paise oPaisCliente, string dte, long Id)
         {
             NodosInterface nodo = new EstructuraDTE();
             DatosEmision = nodo.NodoDatosEmision();
-            NodosInterface pedido = new DatosGeneralesDTE();
-            PedidoPv oPedido = pedido.PedidoActual();
-
-            try
-            {
-                using (dbContext = new BIPSContext())
-                {
-                    oCliente = dbContext.Clientes.Where(c => c.Id == oPedido.Cliente).FirstOrDefault<Cliente>();
-                    oMunicipioCliente = dbContext.Municipios.Where(m => m.Id == oCliente.Municipio).FirstOrDefault<Municipio>();
-                    oDepartamentoCliente = dbContext.Departamentos.Where(d => d.Id == oMunicipioCliente.Departamento).FirstOrDefault<Departamento>();
-                    oPaisCliente = dbContext.Paises.Where(p => p.Id == oDepartamentoCliente.Pais).FirstOrDefault<Paise>();
-
-
-                }
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-
-
+            NodosInterface pedido = new DatosGeneralesDTE();         
 
             try
             {

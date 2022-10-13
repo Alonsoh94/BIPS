@@ -15,16 +15,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
     public class FirmarMP
     {
         int TipoRespuesta;
-        static string UuidFirmado;
-        static string XMLFirmado;
-        string Token;
+        static string UuidFirmado = string.Empty;
+        static string XMLFirmado = string.Empty;
+        string? Token;
         static string MensajeRequest = string.Empty;
 
         public async Task <bool> FirmarDocumento(String XMLString, string UuiReferencia, ConfiguracionesFel oConfiFel)
         {
             MensajeRequest = string.Empty;
-
             bool ResultadoRequest = false;
+
             XmlDocument DocFirmar = new XmlDocument();
 
             XmlNode NodFirmarSGML = DocFirmar.CreateElement("FirmaDocumentoRequest");
@@ -71,25 +71,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                                 UuidFirmado = Convert.ToString(Queryuuid.FirstOrDefault().Value);
 
                                 var Queryxml = from doc in XMLRespuesta.Elements("FirmaDocumentoResponse").Elements("xml_dte") select doc;
-                                XMLFirmado = Convert.ToString(Queryxml.FirstOrDefault().Value);                                
+                                XMLFirmado = Convert.ToString(Queryxml.FirstOrDefault().Value);
 
-                                VerificarDocumento verdocto = new();
-                                bool VerificacionDoc = await verdocto.VerificacionDocumento(oConfiFel, UuiReferencia);
-
-                                if(VerificacionDoc == true)
-                                {
-                                    CertificarMP Registar = new CertificarMP();
-                                    Registar.RegistrarDocumentoMP(XMLFirmado, oConfiFel,UuidFirmado);
-                                }
-                                else
-                                {
-
-                                }
+                                ResultadoRequest = true;                                
                             }
                             else
                             {
                                 ResultadoRequest = false;
-
                                 string Errores;
                                 var QueryError = from Docto in XMLRespuesta.Elements("listado_errores").Elements() select Docto;
 
@@ -98,20 +86,21 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                                 foreach (var node in QueryError)
                                 {
                                     Errores = Errores + $" | Error {contador}= {node.Value}";
-
                                     contador++;
-
                                 }
+                                MensajeRequest = Errores;
                             }   
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                           // ResultadoRequest = false;
+                            ResultadoRequest = false;
+                            MensajeRequest = "Error: " + e.Message;
                         }
                     }
                     else
                     {
-                        // ResultadoReq = false;
+                        ResultadoRequest = false;
+                        MensajeRequest = "Error: Status Code = " + response.StatusCode;
                     }
                 }
             }
@@ -121,5 +110,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 
         public string UuidXMLFimardo() => UuidFirmado;
         public string XMLFirmandoDoc() => XMLFirmado;
+        public string MensajeResultado() => MensajeRequest;
     }
 }

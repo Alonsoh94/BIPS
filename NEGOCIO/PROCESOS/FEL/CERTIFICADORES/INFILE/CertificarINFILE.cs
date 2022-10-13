@@ -61,8 +61,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                                 xml_certificado = JsonContent.xml_certificado
                             };
 
-                            RespuestaCertificada = objCertificado;
-                           
+                            RespuestaCertificada = objCertificado;                           
                         }
                         else
                         {
@@ -79,7 +78,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                             ResultadoReq = false;
                             DescripcionReq = JsonContent.descripcion;
                         }
-
                     }
                     else
                     {

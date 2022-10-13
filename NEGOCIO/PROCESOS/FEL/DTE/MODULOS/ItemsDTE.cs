@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
@@ -13,16 +13,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
     public class ItemsDTE
     {
         XmlNode DatosEmision;
-        PedidoPv oPedido;
-        TipoDocumentoFiscal oDoctoFiscal;
+       // PedidoPv oPedido;
+        //TipoDocumentoFiscal oDoctoFiscal;
         BIPSContext dbContext;
-        public XmlDocument ModuloItemsDTE(XmlDocument DocXML, string dte, long Id)
+        public XmlDocument ModuloItemsDTE(XmlDocument DocXML,TipoDocumentoFiscal oDoctoFiscal, PedidoPv oPedido, string dte, long Id)
         {
           List<ItemsPedidoPv> items = new List<ItemsPedidoPv>();
             NodosInterface nodoEstructura = new EstructuraDTE();
             DatosEmision = nodoEstructura.NodoDatosEmision();
             NodosInterface node = new DatosGeneralesDTE();
-            oPedido = node.PedidoActual();
+            //oPedido = node.PedidoActual();
 
 
             try
@@ -30,7 +30,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 using(dbContext = new BIPSContext())
                 {
                     items = dbContext.ItemsPedidoPvs.Where(i => i.PedidoPv == oPedido.Id).ToList<ItemsPedidoPv>();
-                    oDoctoFiscal = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
+                    //oDoctoFiscal = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
                 }
 
             }

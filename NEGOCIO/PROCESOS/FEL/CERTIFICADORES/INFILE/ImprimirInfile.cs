@@ -11,9 +11,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
     public class ImprimirInfile
     {
         public static string MessageResult = string.Empty;
-        public async Task ReimprimirFactura(string sUrl, string sPath)
+        public async Task<bool> ImprimirFactura(string sUrl, string sPath)
         {
-            
+            bool resultado;
             try
             {
                 if (sPath.Contains("%userprofile%"))
@@ -31,16 +31,16 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                     fileopener.StartInfo.Arguments = "\"" + sPath + "\""; fileopener.Start();
                 }
                 MessageResult = "Proceso Exitoso...";
+                resultado = true;   
 ;
             }
             catch (Exception e)
             {
                 MessageResult = "Se ha producido un Error: " + e.Message;
+                resultado = false;
 
             }
-
-            //     System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
+            return resultado;
 
         }
     }

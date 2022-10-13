@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +10,29 @@ using System.Xml;
 namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
     public class TotalesDTE
-    {
-        PedidoPv oPedido;
+    {    
         ImpuestosPedido oImpuestosPedido;
-        XmlNode DatosEmision;
-        TipoDocumentoFiscal oTipoDocumentoFiscal;
+        XmlNode DatosEmision;       
         BIPSContext dbContext;
 
-        public XmlDocument ModuloTotales(XmlDocument DocXML, string dte, long Id)
+        public XmlDocument ModuloTotales(XmlDocument DocXML , TipoDocumentoFiscal oTipoDocumentoFiscal, PedidoPv oPedido, string dte, long Id)
         {
             List<ImpuestosPedido> ListaImpuestosPedidos = new List<ImpuestosPedido>();
 
             NodosInterface nodoEstructura = new EstructuraDTE();
             DatosEmision = nodoEstructura.NodoDatosEmision();
-            NodosInterface NodoDG = new DatosGeneralesDTE();
-            oPedido = NodoDG.PedidoActual();
+            
             try
             {
                using (dbContext = new BIPSContext())
                 {
                     ListaImpuestosPedidos = dbContext.ImpuestosPedidos.Where(i => i.PedidoPv == oPedido.Id).ToList();
-                    oTipoDocumentoFiscal = dbContext.TipoDocumentoFiscals.Where(t => t.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault();
                 }
             }
             catch (Exception)
             {
 
-                throw;
+                throw;  //*****************************
             }
 
             try
@@ -45,8 +41,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 DatosEmision.AppendChild(Totales);
 
                 if (ListaImpuestosPedidos.Count > 0)
-                {
-                    
+                {                    
                     if (oTipoDocumentoFiscal.Nomenclatura != "NABN")
                     {
                         foreach (var item in ListaImpuestosPedidos)
@@ -77,7 +72,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
             catch (Exception)
             {
 
-                throw;
+                throw;  ///***********************************
             }
 
             return DocXML;

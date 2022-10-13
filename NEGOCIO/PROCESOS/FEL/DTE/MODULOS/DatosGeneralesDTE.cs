@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.Logging;
@@ -21,25 +21,26 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         static string CodigoRef;
         NodosInterface Nodos = new EstructuraDTE();
             
-       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, string dte, long id)
+       public XmlDocument ModuloDatosGenerales(XmlDocument Documento, PedidoPv oPedido, Establecimiento oEstablecimiento, Empresa oEmpresa, Monedum oMoneda, TipoDocumentoFiscal oTipoDoc, string dte, long id)
        {
             XmlNode DatosEmision;
-            Monedum oMoneda;
-            TipoDocumentoFiscal oTipoDoc;
+            //Monedum oMoneda;
+           // TipoDocumentoFiscal oTipoDoc;
 
+            DatosEmision = Nodos.NodoDatosEmision();
 
             try
             {
-                using(dbContext = new BIPSContext())
-                {
-                    DatosEmision = Nodos.NodoDatosEmision();
-                    oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault<PedidoPv>();
-                    Establecimiento oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
-                    Empresa oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault<Empresa>();
-                    oMoneda = dbContext.Moneda.Where(m => m.Id == oEmpresa.MonedaBase).FirstOrDefault<Monedum>();
-                    oTipoDoc = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
-
-                }
+               // using(dbContext = new BIPSContext())
+               // {
+               //     
+               //     oPedido = dbContext.PedidoPvs.Where(p => p.Id == id).FirstOrDefault<PedidoPv>();
+               //     Establecimiento oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oPedido.Establecimiento).FirstOrDefault<Establecimiento>();
+               //     Empresa oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault<Empresa>();
+               //     oMoneda = dbContext.Moneda.Where(m => m.Id == oEmpresa.MonedaBase).FirstOrDefault<Monedum>();
+               //     oTipoDoc = dbContext.TipoDocumentoFiscals.Where(d => d.Id == oPedido.TipoDocumentoFiscal).FirstOrDefault<TipoDocumentoFiscal>();
+               //
+               // }
 
 
                 // ****-----
@@ -69,10 +70,10 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
                 //** string Zonahoraria = "T00:00:00.000-06:00";
                 //** string FechaHOraCompleta = FechaHora + Zonahoraria;
                 //TimeZoneInfo.ConvertTimeBySystemTimeZoneId(FechaHora, hwZone.ToString());
-                string CentroAmerica = "CST";
-
-                TimeZoneInfo ZonaHorariaGuatemala = TimeZoneInfo.FindSystemTimeZoneById(CentroAmerica);
-                DateTime NewFecha = TimeZoneInfo.ConvertTimeToUtc(oPedido.Fecha, ZonaHorariaGuatemala);
+              // string CentroAmerica = "CST";
+              //
+              // TimeZoneInfo ZonaHorariaGuatemala = TimeZoneInfo.FindSystemTimeZoneById(CentroAmerica);
+              // DateTime NewFecha = TimeZoneInfo.ConvertTimeToUtc(oPedido.Fecha, ZonaHorariaGuatemala);
 
 
 

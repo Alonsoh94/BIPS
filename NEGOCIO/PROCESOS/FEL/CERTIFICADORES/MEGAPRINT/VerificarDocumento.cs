@@ -72,8 +72,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                             }                          
 
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
+                            ResultadoVerificacion = "Error en Proceso de Verificación DTE: al intentar leer el Tipo de Respuesta en el documentos de Verifica Documento Response se generó un excepción.";
 
                             ResultadoVerificar = false;
                         }
@@ -81,6 +82,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                     }
                     else
                     {
+                        ResultadoVerificacion = "Error en Proceso de Verificación DTE: El Status Code del Servidor es el Siguiente = " + response.StatusCode;
                          ResultadoVerificar = false;
                     }
 

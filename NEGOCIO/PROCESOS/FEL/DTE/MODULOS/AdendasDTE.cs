@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
         
         BIPSContext dbContext;
 
-        public XmlDocument ModuloAdendasDTE(XmlDocument DocXML, string dte, long Id)
+        public XmlDocument ModuloAdendasDTE(XmlDocument DocXML, Empresa oEmpresa, string dte, long Id)
         {
             List<Adendum> ListaAdendas = new List<Adendum>();
             NodosInterface nodo = new EstructuraDTE();
@@ -22,7 +22,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 
             using (dbContext = new BIPSContext())
             {
-                ListaAdendas = dbContext.Adenda.Where(a => a.Empresa == DatosEmpresariales().Id).ToList();
+                ListaAdendas = dbContext.Adenda.Where(a => a.Empresa == oEmpresa.Id).ToList();
             }
             try
             {

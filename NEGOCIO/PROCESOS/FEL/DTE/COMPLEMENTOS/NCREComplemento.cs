@@ -1,6 +1,6 @@
 ﻿using BIPS.MODELOS;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +13,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
 {
     public class NCREComplemento
     {
-        PedidoPv oPedido;
+       
         XmlNode DatosEmision;
         BIPSContext dbContext;
 
@@ -22,15 +22,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
             NodosInterface nodos = new EstructuraDTE();
             NodosInterface DatosGenerales = new DatosGeneralesDTE();
             DatosEmision = nodos.NodoDatosEmision();
-            oPedido = DatosGenerales.PedidoActual();
+        
             ComplementoNota ComNotas = new();
             using (dbContext = new BIPSContext())
             {
                 if(dbContext.ComplementoNotas.Any(e => e.PedidoPv == Id))
                 {
-                    ComNotas = dbContext.ComplementoNotas.Where(e => e.PedidoPv == Id).FirstOrDefault();
-
-                    
+                    ComNotas = dbContext.ComplementoNotas.Where(e => e.PedidoPv == Id).FirstOrDefault();                    
                 }
             }
 

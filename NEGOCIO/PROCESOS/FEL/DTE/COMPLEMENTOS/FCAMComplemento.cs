@@ -1,6 +1,6 @@
 ﻿using BIPS.MODELOS;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
@@ -17,17 +17,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
         ComplementoFcam oComplementoFcam = new();
         ComplementoExpo oComplementoExpo = new();
 
-
-        PedidoPv oPedido;
         XmlNode DatosEmision;
         BIPSContext dbContext;
 
-        public void FCAMComplementoXML(XmlDocument DocXML, string dte, long Id, string xsi, string cex, string cfc)
+        public void FCAMComplementoXML(XmlDocument DocXML,PedidoPv oPedido, string dte, long Id, string xsi, string cex, string cfc)
         {
-            NodosInterface nodos = new EstructuraDTE();
-            NodosInterface DatosGenerales = new DatosGeneralesDTE();
-            DatosEmision = nodos.NodoDatosEmision();
-            oPedido = DatosGenerales.PedidoActual();
+            NodosInterface nodos = new EstructuraDTE();     
+            DatosEmision = nodos.NodoDatosEmision();   
 
             XmlNode NComplementos = DocXML.CreateElement("dte", "Complementos", dte);
             DatosEmision.AppendChild(NComplementos);
@@ -171,13 +167,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
                 NVersionFCAM.Value = "1";
                 NAbonosFacturaCambiaria.Attributes.Append(NVersionFCAM);
 
-                if ("***********" == "INFILE")
-                {
-                    XmlAttribute AschemaLocation = DocXML.CreateAttribute("xsi", "schemaLocation", xsi);
-                    AschemaLocation.Value = @"http://www.sat.gob.gt/dte/fel/CompCambiaria/0.1.0 C:\Users\FEL\Desktop\Esquemas\GT_Complemento_Cambiaria-0.1.0.xsd";
-                    NAbonosFacturaCambiaria.Attributes.Append(AschemaLocation);
-
-                }
+              //if ("***********" == "INFILE")
+              //{
+              //    XmlAttribute AschemaLocation = DocXML.CreateAttribute("xsi", "schemaLocation", xsi);
+              //    AschemaLocation.Value = @"http://www.sat.gob.gt/dte/fel/CompCambiaria/0.1.0 C:\Users\FEL\Desktop\Esquemas\GT_Complemento_Cambiaria-0.1.0.xsd";
+              //    NAbonosFacturaCambiaria.Attributes.Append(AschemaLocation);
+              //
+              //}
 
 
                 //NODO ABONO

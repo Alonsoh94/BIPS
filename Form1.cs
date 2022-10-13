@@ -1,4 +1,4 @@
-using BIPS.NEGOCIO;
+using BIPS.NEGOCIO.PROCESOS.FEL;
 
 namespace BIPS
 {
@@ -9,14 +9,19 @@ namespace BIPS
             InitializeComponent();
         }
         ImplementacionFEL implementacionFEL = new ImplementacionFEL();
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {            
-            implementacionFEL.ProbarImplementacion();
+           await implementacionFEL.CertificarDTE();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
-            implementacionFEL.ProbarAnulacion();
+          if ( await implementacionFEL.AnularDTE() == false)
+            {
+                MessageBox.Show(implementacionFEL.MensajeResultado());
+                
+            }
+            
         }
     }
 }

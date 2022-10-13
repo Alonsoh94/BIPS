@@ -18,8 +18,9 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
 
         public static string MensajeRequest;
         public static bool ResultadoRequest;
-        public async Task AnularDocumento(AnularINFILE ObjAnular, ConfiguracionesFel oConfiFel, string Referencia, long IdFact)
+        public async Task<bool> AnularDocumento(AnularINFILE ObjAnular, ConfiguracionesFel oConfiFel, string Referencia, long IdFact)
         {
+            
             try
             {
                 var ObjCertificarJson = JsonConvert.SerializeObject(ObjAnular);
@@ -68,6 +69,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                                             //dbContext.Facturas.Update(ObjFact);
                                             dbContext.SaveChanges();
                                             ResultadoRequest = true;
+
                                         }
 
                                     }
@@ -111,12 +113,14 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                MensajeRequest = "Error :" + e.Message;
             }
+            return ResultadoRequest;
             
         }
+        public string MensajeResultado() => MensajeRequest;
     }
 }

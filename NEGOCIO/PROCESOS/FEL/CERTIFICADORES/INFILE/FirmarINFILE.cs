@@ -27,7 +27,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
         public string es_anulacion { get; set; }
 
 
-
+        public static string Mensaje = string.Empty;
         public static string ArchivoReq;
         public static bool ResultadoReq;
         public static string DescripcionReq;
@@ -68,12 +68,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                             ArchivoReq = JsonContent.archivo;
                             ResultadoReq = false;
                             DescripcionReq = JsonContent.descripcion;
+                            Mensaje = "Error: " + DescripcionReq;
                         }
-
                     }
                     else
                     {
                         ResultadoReq = false;
+                        Mensaje = "Error: El servidor ha retornado el siguente status code = " + response.StatusCode;
                     }
                    
                 }
@@ -84,6 +85,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
         public string ArchivoXMLFirmado() => ArchivoReq;
         public string DescripcionXMLFirmado() => DescripcionReq;
         public bool ResultadoXMLFirmado()=> ResultadoReq;
+        public string MensajeResultado() => Mensaje;
     }
 
    

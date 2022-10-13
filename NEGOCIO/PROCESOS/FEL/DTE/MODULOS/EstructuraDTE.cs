@@ -1,5 +1,5 @@
 ﻿using BIPS.MODELOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS
 {
     public class EstructuraDTE: NodosInterface
     {
-        string dte = "http://www.sat.gob.gt/dte/fel/0.2.0";
-        string xsi = "http://www.w3.org/2001/XMLSchema-instance";
-        string ds = "http://www.w3.org/2000/09/xmldsig#";
+       //string dte = "http://www.sat.gob.gt/dte/fel/0.2.0";
+       //string xsi = "http://www.w3.org/2001/XMLSchema-instance";
+       //string ds = "http://www.w3.org/2000/09/xmldsig#";
         static XmlNode NodoDatosEminisonXML;
         static XmlNode NodoRefSAT;
       
-        public XmlDocument CrearEstructuraXML()
+        public XmlDocument CrearEstructuraXML(string dte, string ds)
         {
            // int prueba;
             // Declaraciones de URLS

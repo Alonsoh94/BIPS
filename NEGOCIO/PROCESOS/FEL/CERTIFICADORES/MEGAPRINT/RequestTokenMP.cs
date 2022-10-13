@@ -17,91 +17,103 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 {
     public class RequestTokenMP
     {
+        static string MensajeResultado = string.Empty;
         public async Task<bool> RequestToken(ConfiguracionesFel oConfiFel)
         {
             bool ResultadoRequest = false;
-            DateTime Vigencia;
-            BIPSContext dbContext;
+            try
+            {               
 
+                DateTime Vigencia;
+                BIPSContext dbContext;
 
+                XmlDocument XmlToken = new XmlDocument();
 
-            XmlDocument XmlToken = new XmlDocument();
+                XmlNode NodoToken = XmlToken.CreateElement("SolicitaTokenRequest");
+                XmlToken.AppendChild(NodoToken);
 
-            XmlNode NodoToken = XmlToken.CreateElement("SolicitaTokenRequest");
-            XmlToken.AppendChild(NodoToken);
+                XmlNode NodoUsuario = XmlToken.CreateElement("usuario");
+                NodoToken.AppendChild(NodoUsuario);
+                NodoUsuario.InnerText = oConfiFel.Usuario.Trim();
 
+                XmlNode NodoApikey = XmlToken.CreateElement("apikey");
+                NodoToken.AppendChild(NodoApikey);
+                NodoApikey.InnerText = oConfiFel.Calve.Trim();
 
-            XmlNode NodoUsuario = XmlToken.CreateElement("usuario");
-            NodoToken.AppendChild(NodoUsuario);
-            NodoUsuario.InnerText = oConfiFel.Usuario.Trim();
-
-            XmlNode NodoApikey = XmlToken.CreateElement("apikey");
-            NodoToken.AppendChild(NodoApikey);
-            NodoApikey.InnerText = oConfiFel.Calve.Trim();
-
-            using (HttpClient hCliente = new HttpClient())
-            {
-                using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, oConfiFel.Urltoken.Trim()))
+                using (HttpClient hCliente = new HttpClient())
                 {
-                    // requestMessage.Headers.Add("Content-Type", "application/json");
-                    requestMessage.Headers.Add("Accept", "Application/xml");
-                    requestMessage.Headers.Add("Method", "POST");
-                   // requestMessage.Headers.Add("usuario", "109641035");
-                    //requestMessage.Headers.Add("identificador", "FACT-478533");
-                   // requestMessage.Headers.Add("llave", "531C11258CF567F5985AB5F8C910B0D6");
-                    requestMessage.Content = new StringContent(XmlToken.OuterXml, Encoding.UTF8, "Application/xml");
-
-                    var response = await hCliente.SendAsync(requestMessage);
-                    var Contenido = response.Content.ReadAsStringAsync();
-
-                    if (response.IsSuccessStatusCode)
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, oConfiFel.Urltoken.Trim()))
                     {
-                        int TipoRespuesta;
-                        string Token;
-                        try
-                        {
-                            XDocument XMLRespuesta = XDocument.Parse(Contenido.Result);
-                            var Query1 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("tipo_respuesta") select doc;
-                            TipoRespuesta = Convert.ToInt32(Query1.FirstOrDefault().Value);
-                            
-                            if(TipoRespuesta == 0)
-                            {
-                                var Query2 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("token") select doc;
-                                var Query3 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("vigencia") select doc;
-                                Token = Query2.FirstOrDefault().Value;
-                                Vigencia = Convert.ToDateTime(Query3.FirstOrDefault().Value);
+                        // requestMessage.Headers.Add("Content-Type", "application/json");
+                        requestMessage.Headers.Add("Accept", "Application/xml");
+                        requestMessage.Headers.Add("Method", "POST");
+                        // requestMessage.Headers.Add("usuario", "109641035");
+                        //requestMessage.Headers.Add("identificador", "FACT-478533");
+                        // requestMessage.Headers.Add("llave", "531C11258CF567F5985AB5F8C910B0D6");
+                        requestMessage.Content = new StringContent(XmlToken.OuterXml, Encoding.UTF8, "Application/xml");
 
-                                using (dbContext = new())
+                        var response = await hCliente.SendAsync(requestMessage);
+                        var Contenido = response.Content.ReadAsStringAsync();
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            int TipoRespuesta;
+                            string Token;
+                            try
+                            {
+                                XDocument XMLRespuesta = XDocument.Parse(Contenido.Result);
+                                var Query1 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("tipo_respuesta") select doc;
+                                TipoRespuesta = Convert.ToInt32(Query1.FirstOrDefault().Value);
+
+                                if (TipoRespuesta == 0)
                                 {
-                                    var confi = dbContext.ConfiguracionesFels.First();
-                                    confi.ExpiraToken = Vigencia;
-                                    confi.Token = Token;
-                                    dbContext.SaveChanges();
-                                    ResultadoRequest = true;
+                                    var Query2 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("token") select doc;
+                                    var Query3 = from doc in XMLRespuesta.Elements("SolicitaTokenResponse").Elements("vigencia") select doc;
+                                    Token = Query2.FirstOrDefault().Value;
+                                    Vigencia = Convert.ToDateTime(Query3.FirstOrDefault().Value);
+
+                                    using (dbContext = new())
+                                    {
+                                        var confi = dbContext.ConfiguracionesFels.First();
+                                        confi.ExpiraToken = Vigencia;
+                                        confi.Token = Token;
+                                        dbContext.SaveChanges();
+                                        ResultadoRequest = true;
+                                    }
+                                }
+                                else
+                                {
+                                    ResultadoRequest = false;
+                                    MensajeResultado = "Error en la Solicitud de Token: El Tipo de Respuesta de Solicitar Token Response es un Error";
                                 }
                             }
-                            else
+                            catch (Exception)
                             {
+                                MensajeResultado = "Error en la Solicitud de Token: Se genero un error al intentar leer el tipo de respuesta del XML";
                                 ResultadoRequest = false;
                             }
 
-                            
                         }
-                        catch (Exception)
+                        else
                         {
+                            MensajeResultado = "Error en la Solicitud de Token: El servidor retorno el siguiente status code = " + response.StatusCode;
 
-                            ResultadoRequest=false;
+                            ResultadoRequest = false;
                         }
 
                     }
-                    else
-                    {
-                        // ResultadoReq = false;
-                    }
-
                 }
+
             }
+            catch (Exception)
+            {
+                MensajeResultado = "Error en la Solicitud de Token: Se ha producido un error en el proceso de Solicitud de Token";
+                ResultadoRequest = false;
+            }
+            
             return ResultadoRequest;
         }
+
+        public string MensajeSolicitudToken() => MensajeResultado;
     }
 }

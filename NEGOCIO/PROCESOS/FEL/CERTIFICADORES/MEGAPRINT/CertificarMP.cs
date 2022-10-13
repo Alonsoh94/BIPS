@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml;
+using BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE;
+using System.Net.Http.Json;
 
 namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
 {
@@ -15,10 +17,12 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
     {
 
         public static string MessageResult;
+        public static string UuidCer;
+        public static string XMLCer;
+        ResponseOK RespuestaCertificada = new ResponseOK();
         public async Task<bool> RegistrarDocumentoMP(string XMLFirmado, ConfiguracionesFel oConfiFel, string UuidFirmado)
         {
             bool RequestResult = false;
-
             try
             {                
                 string UuidRegistradoMP;
@@ -76,13 +80,28 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                                     if (TipoRespuesta == 0)
                                     {
                                         var Queryuuid = from doc in XMLRespuesta.Elements("RegistraDocumentoXMLResponse").Elements("uuid") select doc;
-                                        UuidFirmado = Convert.ToString(Queryuuid.FirstOrDefault().Value);
+                                        UuidCer = Convert.ToString(Queryuuid.FirstOrDefault().Value);
 
                                         var Queryxml = from doc in XMLRespuesta.Elements("RegistraDocumentoXMLResponse").Elements("xml_dte") select doc;
-                                        XMLFirmado = Convert.ToString(Queryxml.FirstOrDefault().Value);
+                                        XMLCer = Convert.ToString(Queryxml.FirstOrDefault().Value);
 
-                                        ObtenerPDFMP oPDF = new ObtenerPDFMP();
-                                        oPDF.ImpresionFactura(oConfiFel,UuidFirmado);
+                                        string Serie = UuidCer.Substring(0, 8);
+                                        string NumeroHexa = UuidCer.Substring(9, 9);
+                                        NumeroHexa = NumeroHexa.Replace("-", "");
+
+                                        Int64 NumeroAutorizacion = Convert.ToInt64(NumeroHexa, 16); // HexadecimalToDecimal(NumeroHexa);
+                                        string Autorizacion = Convert.ToString(NumeroAutorizacion);
+
+                                        var objCertificado = new ResponseOK()
+                                        {
+
+                                            uuid = UuidCer,
+                                            serie = Serie,
+                                            numero = Autorizacion                                            
+                                        };
+
+                                        RespuestaCertificada = objCertificado;
+
                                     }
                                     else
                                     {                                        
@@ -126,5 +145,8 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
             }
             return RequestResult;
         }
+
+        public string UuidCertificado() => UuidCer;
+        public ResponseOK MiCertificacion() => RespuestaCertificada;
     }
 }

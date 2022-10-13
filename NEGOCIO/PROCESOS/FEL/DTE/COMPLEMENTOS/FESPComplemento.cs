@@ -1,6 +1,6 @@
 ﻿using BIPS.MODELOS;
+using BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML;
 using BIPS.NEGOCIO.PROCESOS.FEL.DTE.MODULOS;
-using BIPS.NEGOCIO.PROCESOS.FEL.DTE.XML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +14,15 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.COMPLEMENTOS
     {
         ComplementoFesp oComplementoFesp;
 
-        PedidoPv oPedido;
+      
         XmlNode DatosEmision;
         BIPSContext dbContext;
-        public XmlDocument ComplementoFESPXML(XmlDocument DocXML, string dte, long Id, string xsi, string cfe)
+        public XmlDocument ComplementoFESPXML(XmlDocument DocXML, PedidoPv oPedido, string dte, long Id, string xsi, string cfe)
         {
 
-            NodosInterface nodos = new EstructuraDTE();
-            NodosInterface DatosGenerales = new DatosGeneralesDTE();
+            NodosInterface nodos = new EstructuraDTE();           
             DatosEmision = nodos.NodoDatosEmision();
-            oPedido = DatosGenerales.PedidoActual();
+  
 
             XmlNode NComplementos = DocXML.CreateElement("dte", "Complementos", dte);
             DatosEmision.AppendChild(NComplementos);
