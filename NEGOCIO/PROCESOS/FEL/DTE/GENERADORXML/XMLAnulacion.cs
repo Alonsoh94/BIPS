@@ -1,8 +1,12 @@
 ﻿using BIPS.MODELOS;
+using BIPS.NEGOCIO.PROCESOS.FACTURACION.IMPLEMENTACION;
 using BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE;
+using BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -21,9 +25,11 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
         static Establecimiento? oEstablecimiento = new();
         static ConfiguracionesFel? oConfiFel = new();
         static DateTime FechaEmisionPedido = new();
+        static long ID;
 
         public async Task<XmlDocument> GenerarDocumentoAnular(long Id)
         {
+            ID = Id;
             string dte = "http://www.sat.gob.gt/dte/fel/0.1.0";
             string ds = "http://www.w3.org/2000/09/xmldsig#";  
 
@@ -33,7 +39,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
                 {
                     using (BIPSContext dbContext = new BIPSContext())
                     {
-                        oFactura = dbContext.Facturas.Where(f => f.Id == Id).FirstOrDefault();
+                        //oFactura = dbContext.Facturas.Where(f => f.Id == Id).FirstOrDefault();
                         oEstablecimiento = dbContext.Establecimientos.Where(e => e.Id == oFactura.Establecimiento).FirstOrDefault();
                         oEmpresa = dbContext.Empresas.Where(e => e.Id == oEstablecimiento.Empresa).FirstOrDefault();
                         oConfiFel = dbContext.ConfiguracionesFels.Where(c => c.Empresa == oEmpresa.Id).FirstOrDefault();
@@ -170,69 +176,139 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
 
         public async Task<bool> AnularDocumento(long id)
         {
-            bool ResultadoRequest = false;
-            XmlDocument Documento = await GenerarDocumentoAnular(id);
-            try
+            using (BIPSContext dbContext = new BIPSContext())
             {
-                if (Documento != null)
+                oFactura = dbContext.Facturas.Where(f => f.Id == id).FirstOrDefault();
+            }
+            if (oFactura.Anulado == true)
+            {
+                bool ResultadoRequest = false;
+                XmlDocument Documento = await GenerarDocumentoAnular(id);
+                if (Documento.OuterXml != String.Empty)
                 {
-                    if (oConfiFel.Certificador == "INFILE")
+                    try
                     {
-                        byte[] XMLByte = Encoding.UTF8.GetBytes(Documento.OuterXml);
-                        string XMLBase64 = Convert.ToBase64String(XMLByte);
-                        AnularINFILE oAnularInfile = new AnularINFILE();
-                        FirmarINFILE oFirmaIn = new FirmarINFILE();
-                        var obj = new FirmarINFILE()
+                        if (Documento != null)
                         {
-                            // NOTA: en la firma se utiliza el Token
-                            llave = oConfiFel.Token.Trim(),
-                            codigo = oFactura.ReferenciaInterna.Trim(),
-                            archivo = XMLBase64,
-                            alias = oConfiFel.Usuario.Trim(),
-                            es_anulacion = "S"
-                        };
-                        bool FirmaRes = await oFirmaIn.FirmarDocumento(obj, oConfiFel);
-                        if (FirmaRes == true)
-                        {
-                            string EmailCopy;
-                            if (oConfiFel.CorreoCopia == null)
+                            if (oConfiFel.Certificador == "INFILE")
                             {
-                                EmailCopy = string.Empty;
-                            }
-                            else
-                            {
-                                EmailCopy = oConfiFel.CorreoCopia.ToString();
-                            }
+                                byte[] XMLByte = Encoding.UTF8.GetBytes(Documento.OuterXml);
+                                string XMLBase64 = Convert.ToBase64String(XMLByte);
+                                AnularINFILE oAnularInfile = new AnularINFILE();
+                                FirmarINFILE oFirmaIn = new FirmarINFILE();
+                                RevertirFacturacion revertir = new RevertirFacturacion();
+                                GenerarGUID guid = new GenerarGUID();
+                                string ReferenciaAn = guid.GenerarcionGUID();
+                                var obj = new FirmarINFILE()
+                                {
+                                    // NOTA: en la firma se utiliza el Token
+                                    llave = oConfiFel.Token.Trim(),
+                                    //codigo = oFactura.ReferenciaInterna.Trim(),
+                                    codigo = ReferenciaAn,
+                                    archivo = XMLBase64,
+                                    alias = oConfiFel.Usuario.Trim(),
+                                    es_anulacion = "S"
+                                };
+                                bool FirmaRes = await oFirmaIn.FirmarDocumento(obj, oConfiFel);
+                                if (FirmaRes == true)
+                                {
+                                    string EmailCopy;
+                                    if (oConfiFel.CorreoCopia == null)
+                                    {
+                                        EmailCopy = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        EmailCopy = oConfiFel.CorreoCopia.ToString();
+                                    }
 
-                            var ObjAnular = new AnularINFILE()
-                            {
-                                nit_emisor = oEmpresa.Rtu.Trim(),
-                                correo_copia = EmailCopy,
-                                xml_dte = oFirmaIn.ArchivoXMLFirmado()
-                            };
-                            bool ResAnular = await oAnularInfile.AnularDocumento(ObjAnular, oConfiFel, oFactura.ReferenciaInterna, oFactura.Id);
-                            if (ResAnular == false)
-                            {
-                                MensajeRequest = oAnularInfile.MensajeResultado();
+                                    var ObjAnular = new AnularINFILE()
+                                    {
+                                        nit_emisor = oEmpresa.Rtu.Trim(),
+                                        correo_copia = EmailCopy,
+                                        xml_dte = oFirmaIn.ArchivoXMLFirmado()
+                                    };
+                                    bool ResAnular = await oAnularInfile.AnularDocumento(ObjAnular, oConfiFel, oFactura.ReferenciaInterna, oFactura.Id);
+                                    if (ResAnular == true)
+                                    {
+                                        if (await revertir.ActualizaFacturaPorAnualacion(id, ReferenciaAn, oAnularInfile.SerieAnulado(), oAnularInfile.NumeroDoctoAnulado(), oAnularInfile.NumeroAutorizacionAnulado()))
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MensajeRequest = oAnularInfile.MensajeResultado();
+                                    }
+                                }
+                                else
+                                {
+                                    MensajeRequest = oFirmaIn.MensajeResultado();
+                                }
+
                             }
-                        }
-                        else
-                        {
-                            MensajeRequest = oFirmaIn.MensajeResultado();
+                            else if (oConfiFel.Certificador == "MEGAPRINT")
+                            {
+                                FirmarMP firmarMP = new FirmarMP();
+                                VerificarDocumento veri = new VerificarDocumento();
+                                AnularMP Anularmp = new AnularMP();
+                                RevertirFacturacion rever = new RevertirFacturacion();
+                                GenerarGUID Guid = new GenerarGUID();
+                                string UuidRefAnular = Guid.GenerarcionGUID();
+
+                                DateTime hoy = DateTime.Now;
+                                if (hoy <= oConfiFel.ExpiraToken)
+                                {
+                                    if (await firmarMP.FirmarDocumento(Documento.OuterXml, UuidRefAnular, oConfiFel))
+                                    {
+                                        if (await veri.VerificacionDocumento(oConfiFel, UuidRefAnular))
+                                        {
+                                            if (await Anularmp.AnularDocumento(Documento.OuterXml))
+                                            {
+                                                //--- if (await rever.ActualizaFacturaPorAnualacion())
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    RequestTokenMP oRequestTokenMP = new();
+                                    if (await oRequestTokenMP.RequestToken(oConfiFel))
+                                    {
+                                        if (await firmarMP.FirmarDocumento(Documento.OuterXml, UuidRefAnular, oConfiFel))
+                                        {
+                                            if (await veri.VerificacionDocumento(oConfiFel, UuidRefAnular))
+                                            {
+
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                            }
                         }
 
                     }
-                    else if (oConfiFel.Certificador == "MEGAPRINT")
+                    catch (Exception e)
                     {
 
+                        MensajeRequest = "Error: " + e.Message;
                     }
+
                 }
+                
 
             }
-            catch (Exception e)            {
-
-                MensajeRequest = "Error: " + e.Message;
+            else
+            {
+                MensajeRequest = "Imposible proceder con la solicitud... El Documento ya tiene un estado Anulado";
+                ResultadoRequest = false;
             }
+            
 
             
 
@@ -241,5 +317,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
 
         }
         public string MensajeResultado() => MensajeRequest;
+
+        
     }
 }

@@ -25,7 +25,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FACTURACION.IMPLEMENTACION
             {
                 using (BIPSContext dbContext = new BIPSContext())
                 {
-                    Factura Fac = new Factura();
+                     Factura Fac = new Factura();                    
                     Fac.ReferenciaInterna = oPedido.ReferenciaInterna.Trim();
                     Fac.Establecimiento = oEstablecimiento.Id;
                     Fac.TipoCargoCxc = 1;

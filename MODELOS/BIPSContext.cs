@@ -501,6 +501,10 @@ namespace BIPS.MODELOS
                     .HasMaxLength(40)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ReferenciaInternaAnulacion)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.SerieA)
                     .HasMaxLength(30)
                     .IsUnicode(false);

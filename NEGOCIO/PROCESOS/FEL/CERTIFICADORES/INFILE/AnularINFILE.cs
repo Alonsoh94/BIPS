@@ -18,9 +18,12 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
 
         public static string MensajeRequest;
         public static bool ResultadoRequest;
+        public static string NumeroDoctoAn;
+        public static string NumeroAutorizacionAn;
+        public static string SerieAn;
         public async Task<bool> AnularDocumento(AnularINFILE ObjAnular, ConfiguracionesFel oConfiFel, string Referencia, long IdFact)
         {
-            
+          
             try
             {
                 var ObjCertificarJson = JsonConvert.SerializeObject(ObjAnular);
@@ -49,35 +52,41 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
 
                             if (JsonContent.resultado == "true")
                             {
+                                NumeroAutorizacionAn = JsonContent.uuid;
+                                NumeroDoctoAn = JsonContent.numero;
+                                SerieAn = JsonContent.serie;
+
+                                ResultadoRequest = true;
+                                /*
                                 try
                                 {
-                                    try
-                                    {
-                                        using (BIPSContext dbContext = new BIPSContext())
-                                        {
-                                            var ObjFact = new Factura()
-                                            {
-                                                Id = IdFact,
-                                                Anulado = true,
-                                                NumeroAutorizacionA = JsonContent.uuid,
-                                                NumeroDoctoA = JsonContent.numero,
-                                                SerieA = JsonContent.serie,
-                                                FechaAnulado = DateTime.Now,
-                                                EstadoGeneral = false   
-                                            };
-                                            dbContext.Entry(ObjFact).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                                            //dbContext.Facturas.Update(ObjFact);
-                                            dbContext.SaveChanges();
-                                            ResultadoRequest = true;
-
-                                        }
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MensajeRequest = "Error al Intentar actualziar los datos de Factura: " + e.Message;
-                                        ResultadoRequest = false;
-                                    }
+                                  // try
+                                  // {
+                                  //     using (BIPSContext dbContext = new BIPSContext())
+                                  //     {
+                                  //         var ObjFact = new Factura()
+                                  //         {
+                                  //             Id = IdFact,
+                                  //             Anulado = true,
+                                  //             NumeroAutorizacionA = JsonContent.uuid,
+                                  //             NumeroDoctoA = JsonContent.numero,
+                                  //             SerieA = JsonContent.serie,
+                                  //             FechaAnulado = DateTime.Now,
+                                  //             EstadoGeneral = false   
+                                  //         };
+                                  //         dbContext.Entry(ObjFact).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                                  //         //dbContext.Facturas.Update(ObjFact);
+                                  //         dbContext.SaveChanges();
+                                  //         ResultadoRequest = true;
+                                  //
+                                  //     }
+                                  //
+                                  // }
+                                  // catch (Exception e)
+                                  // {
+                                  //     MensajeRequest = "Error al Intentar actualziar los datos de Factura: " + e.Message;
+                                  //     ResultadoRequest = false;
+                                  // }
                                     
                                     
 
@@ -87,7 +96,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
                                     MensajeRequest = "Error al Intentar Anular el Documento: " + e.Message;
                                     ResultadoRequest = false;
                                 }
-                                
+                                */
                             }
                             else
                             {
@@ -115,12 +124,14 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.INFILE
             }
             catch (Exception e)
             {
-
                 MensajeRequest = "Error :" + e.Message;
             }
             return ResultadoRequest;
             
         }
         public string MensajeResultado() => MensajeRequest;
+        public string NumeroAutorizacionAnulado() => NumeroAutorizacionAn;
+        public string NumeroDoctoAnulado()=> NumeroDoctoAn;
+        public string SerieAnulado() => SerieAn;
     }
 }

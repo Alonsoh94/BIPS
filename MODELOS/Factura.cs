@@ -28,6 +28,7 @@ namespace BIPS.MODELOS
         public string? SerieA { get; set; }
         public string? NumeroDoctoA { get; set; }
         public DateTime? FechaAnulado { get; set; }
+        public string? ReferenciaInternaAnulacion { get; set; }
         public bool EstadoGeneral { get; set; }
     }
 }
