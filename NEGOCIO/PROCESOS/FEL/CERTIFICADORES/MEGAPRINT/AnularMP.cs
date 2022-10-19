@@ -10,7 +10,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
     {
         static bool ResultRequest = false;
         static string MessageRequest = string.Empty;
-        public async Task<bool> AnularDocumento(string XMLString)
+        public async Task<bool> AnularDocumento(string XMLString, string UuidRefAnular)
         {
 
 

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -290,14 +291,6 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
         #endregion
 
 
-
-
-
-
-
-
-
-
         #region PROCEDIMIENTO PARA FIRMAR DTE
         //************ area de certificacion
         public async Task<bool> FirmarDocumento()
@@ -325,50 +318,55 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
             {
                 FirmarMP oFirmarMP = new FirmarMP();                
                 bool ResultadoCertificacion = false;
+                VerificarDocumento verdocto = new();
 
                 try
                 {
                     DateTime hoy = DateTime.Now;
                     if (hoy <= oConfiFel.ExpiraToken)
                     {
-                        ResultadoFirma = await oFirmarMP.FirmarDocumento(DocumentoXML.OuterXml.ToString(), oPedido.ReferenciaInterna.Trim(), oConfiFel);
-                                               
-                        
-                        if (ResultadoFirma == true)
+                        if (await verdocto.VerificacionDocumento(oConfiFel, oPedido.ReferenciaInterna.Trim()))
                         {
-                            VerificarDocumento verdocto = new();
-                            ResultadoCertificacion = await verdocto.VerificacionDocumento(oConfiFel, oPedido.ReferenciaInterna.Trim());
-                            if (ResultadoCertificacion = false)
+                            if (await oFirmarMP.FirmarDocumento(DocumentoXML.OuterXml.ToString(), oPedido.ReferenciaInterna.Trim(), oConfiFel))
                             {
-                                Mensaje = verdocto.ResultadoVerificacionDocto();
-                            }                      
-
-                        }
-                        else
-                        {
-                            Mensaje = oFirmarMP.MensajeResultado();
-                        }
-                    }
-                    else
-                    {
-                        RequestTokenMP oRequestTokenMP = new();
-                        VerificarDocumento verdocto = new();
-
-                        if (await oRequestTokenMP.RequestToken(oConfiFel))
-                        {
-                            ResultadoFirma = await oFirmarMP.FirmarDocumento(DocumentoXML.OuterXml.ToString(), oPedido.ReferenciaInterna.Trim(), oConfiFel);
-
-                            if (ResultadoFirma == true)
-                            {                                
-                                 ResultadoFirma = await verdocto.VerificacionDocumento(oConfiFel, oPedido.ReferenciaInterna.Trim());
-                                if (ResultadoFirma = false)
-                                {
-                                    Mensaje = verdocto.ResultadoVerificacionDocto();
-                                }
+                                ResultadoFirma = true;
                             }
                             else
                             {
                                 Mensaje = oFirmarMP.MensajeResultado();
+                                ResultadoFirma = false;
+                            }
+                        }
+                        else
+                        {
+                            ResultadoFirma = false;
+                            Mensaje = verdocto.ResultadoVerificacionDocto();
+                        }                        
+
+                    }
+                    else
+                    {
+                        RequestTokenMP oRequestTokenMP = new();
+                       // VerificarDocumento verdocto = new();
+
+                        if (await oRequestTokenMP.RequestToken(oConfiFel))
+                        {
+                            if (await verdocto.VerificacionDocumento(oConfiFel, oPedido.ReferenciaInterna.Trim()))
+                            {
+                                if (await oFirmarMP.FirmarDocumento(DocumentoXML.OuterXml.ToString(), oPedido.ReferenciaInterna.Trim(), oConfiFel))
+                                {
+                                    ResultadoFirma = true;
+                                }
+                                else
+                                {
+                                    Mensaje = oFirmarMP.MensajeResultado();
+                                    ResultadoFirma = false;
+                                }
+                            }
+                            else
+                            {
+                                ResultadoFirma = false;
+                                Mensaje = verdocto.ResultadoVerificacionDocto();
                             }
                         }
                         else
@@ -410,7 +408,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
             {
                 FirmarMP oFirmarMP = new FirmarMP();    
                 CertificarMP Registar = new CertificarMP();
-                ResultadoCertificacion = await Registar.RegistrarDocumentoMP(oFirmarMP.XMLFirmandoDoc(), oConfiFel, oFirmarMP.UuidXMLFimardo());
+                ResultadoCertificacion = await Registar.RegistrarDocumentoMP(oFirmarMP.XMLFirmandoDoc(), oConfiFel, oPedido.ReferenciaInterna.Trim());
 
             }
             return ResultadoCertificacion;
@@ -446,9 +444,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
             bool Resultado = false;
             if (oConfiFel.Certificador == "INFILE")
             {
-                CertificarINFILE cer = new CertificarINFILE();
-
-                
+                CertificarINFILE cer = new CertificarINFILE();                
                 ResponseOK oResponse = cer.MiCertificacion();
                 Resultado = await Factu.GenerarcionFactura(oPedido, oEstablecimiento, oCliente, oResponse);
                 if (Resultado == false)

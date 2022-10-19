@@ -258,19 +258,25 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
 
                                 DateTime hoy = DateTime.Now;
                                 if (hoy <= oConfiFel.ExpiraToken)
-                                {
-                                    if (await firmarMP.FirmarDocumento(Documento.OuterXml, UuidRefAnular, oConfiFel))
+                                {                                   
+                                    if (await veri.VerificacionDocumento(oConfiFel, UuidRefAnular))
                                     {
-                                        if (await veri.VerificacionDocumento(oConfiFel, UuidRefAnular))
+                                        if (await firmarMP.FirmarDocumento(Documento.OuterXml, UuidRefAnular, oConfiFel))
                                         {
-                                            if (await Anularmp.AnularDocumento(Documento.OuterXml))
+                                            if (await Anularmp.AnularDocumento(Documento.OuterXml, UuidRefAnular))
                                             {
                                                 //--- if (await rever.ActualizaFacturaPorAnualacion())
 
                                             }
                                         }
+                                        else                                        
+                                            MensajeRequest = firmarMP.MensajeResultado();
+                                        
 
                                     }
+                                    else                                    
+                                        MensajeRequest = veri.ResultadoVerificacionDocto();
+                                    
 
                                 }
                                 else

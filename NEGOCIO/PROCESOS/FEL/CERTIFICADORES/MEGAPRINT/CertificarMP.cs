@@ -20,7 +20,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
         public static string UuidCer;
         public static string XMLCer;
         ResponseOK RespuestaCertificada = new ResponseOK();
-        public async Task<bool> RegistrarDocumentoMP(string XMLFirmado, ConfiguracionesFel oConfiFel, string UuidFirmado)
+        public async Task<bool> RegistrarDocumentoMP(string XMLFirmado, ConfiguracionesFel oConfiFel, string UuidReferencia)
         {
             bool RequestResult = false;
             try
@@ -40,7 +40,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.CERTIFICADORES.MEGAPRINT
                     DocFirmar.InsertBefore(Declaraciones, NodFirmarSGML);
 
                     XmlAttribute IdContent = DocFirmar.CreateAttribute("id");
-                    IdContent.Value = UuidFirmado;
+                    IdContent.Value = UuidReferencia;
                     NodFirmarSGML.Attributes.Append(IdContent);
 
                     XmlNode xml_DTE = DocFirmar.CreateElement("xml_dte");
