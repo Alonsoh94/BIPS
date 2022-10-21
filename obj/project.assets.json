@@ -2,6 +2,37 @@
   "version": 3,
   "targets": {
     "net6.0-windows7.0": {
+      "BipsControlsForms/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0-windows7.0/BipsControlsForms.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/BipsControlsForms.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App"
+        ],
+        "contentFiles": {
+          "contentFiles/any/net6.0-windows7.0/Software.ico": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        }
+      },
+      "FontAwesome.Sharp/6.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0-windows7.0/FontAwesome.Sharp.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/FontAwesome.Sharp.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App"
+        ]
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -831,6 +862,40 @@
     }
   },
   "libraries": {
+    "BipsControlsForms/1.0.0": {
+      "sha512": "0MpCjHktCfzNbyQq+3Vif4JFE4bgjH5UqtXNtMRXaPIVcMw/RKYFWXrd1L6BDFA1N5fDPPuhTM5AjlQq+f2/eg==",
+      "type": "package",
+      "path": "bipscontrolsforms/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "IconoBipsControls.PNG",
+        "README.md",
+        "bipscontrolsforms.1.0.0.nupkg.sha512",
+        "bipscontrolsforms.nuspec",
+        "content/Software.ico",
+        "contentFiles/any/net6.0-windows7.0/Software.ico",
+        "lib/net6.0-windows7.0/BipsControlsForms.dll"
+      ]
+    },
+    "FontAwesome.Sharp/6.1.1": {
+      "sha512": "p6dnSMcKQg790vGSJgvFk6S8gXQnEcCugfaJ21WFxZz9h+9KyxL+sX6kbGv8p4iVoX/e5BAMnTV4QJFJvx8QxQ==",
+      "type": "package",
+      "path": "fontawesome.sharp/6.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fontawesome.sharp.6.1.1.nupkg.sha512",
+        "fontawesome.sharp.nuspec",
+        "lib/net40/FontAwesome.Sharp.dll",
+        "lib/net45/FontAwesome.Sharp.dll",
+        "lib/net472/FontAwesome.Sharp.dll",
+        "lib/net48/FontAwesome.Sharp.dll",
+        "lib/net5.0-windows7.0/FontAwesome.Sharp.dll",
+        "lib/net6.0-windows7.0/FontAwesome.Sharp.dll",
+        "lib/netcoreapp3.1/FontAwesome.Sharp.dll"
+      ]
+    },
     "Humanizer.Core/2.8.26": {
       "sha512": "OiKusGL20vby4uDEswj2IgkdchC1yQ6rwbIkZDVBPIR6al2b7n3pC91elBul9q33KaBgRKhbZH3+2Ur4fnWx2A==",
       "type": "package",
@@ -2116,6 +2181,8 @@
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
+      "BipsControlsForms >= 1.0.0",
+      "FontAwesome.Sharp >= 6.1.1",
       "Microsoft.EntityFrameworkCore >= 6.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.9",
@@ -2169,6 +2236,14 @@
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
         "dependencies": {
+          "BipsControlsForms": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          },
+          "FontAwesome.Sharp": {
+            "target": "Package",
+            "version": "[6.1.1, )"
+          },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[6.0.9, )"

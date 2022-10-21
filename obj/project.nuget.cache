@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Zawn6s/2Nkdue/5WxayzKG+HUDA4ev3hyahDV0VQ9FEXe4zYUUxHcg/JN0A5Y51ElplyU4hV7tfKNu4QJIqE/Q==",
+  "dgSpecHash": "GtTe8EVukISR74080QLzRQIjCVoPiX4EwpzXmIPvNDo04g+o9Xx9Ip9b6LxE1kobVsBcUDAvcX8uu233a1d+1g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Jose Alonso\\Documents\\BIPS\\BIPS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Jose Alonso\\.nuget\\packages\\bipscontrolsforms\\1.0.0\\bipscontrolsforms.1.0.0.nupkg.sha512",
+    "C:\\Users\\Jose Alonso\\.nuget\\packages\\fontawesome.sharp\\6.1.1\\fontawesome.sharp.6.1.1.nupkg.sha512",
     "C:\\Users\\Jose Alonso\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Jose Alonso\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Jose Alonso\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",

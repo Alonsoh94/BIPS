@@ -275,8 +275,7 @@ namespace BIPS.NEGOCIO.PROCESOS.FEL.DTE.GENERADORXML
 
                                     }
                                     else                                    
-                                        MensajeRequest = veri.ResultadoVerificacionDocto();
-                                    
+                                        MensajeRequest = veri.ResultadoVerificacionDocto();                                    
 
                                 }
                                 else

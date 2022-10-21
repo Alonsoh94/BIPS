@@ -10,10 +10,11 @@
 
   <ItemGroup>
     <Folder Include="NEGOCIO\CONTROLADORES\" />
-    <Folder Include="PRESENTACION\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BipsControlsForms" Version="1.0.0" />
+    <PackageReference Include="FontAwesome.Sharp" Version="6.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">

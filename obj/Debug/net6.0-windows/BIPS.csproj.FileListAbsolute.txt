@@ -102,3 +102,6 @@ C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\bin\Debug\net6.0
 C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\RestSharp.dll
 C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\Microsoft.Extensions.Http.dll
 C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\bin\Debug\net6.0-windows\Microsoft.Extensions.Http.dll
+C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\BipsControlsForms.dll
+C:\Users\Jose Alonso\Documents\BIPS\bin\Debug\net6.0-windows\FontAwesome.Sharp.dll
+C:\Users\Jose Alonso\Documents\BIPS\obj\Debug\net6.0-windows\BIPS.PRESENTACION.FormPrincipal.resources
