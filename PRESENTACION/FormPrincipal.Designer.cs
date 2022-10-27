@@ -47,7 +47,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
+            this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.archivoToolStripMenuItem,
             this.configuracionesToolStripMenuItem});
@@ -83,7 +83,7 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
+            this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.statusStrip1.Location = new System.Drawing.Point(0, 465);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
@@ -92,7 +92,7 @@
             // 
             // PanelMenuLateral
             // 
-            this.PanelMenuLateral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
+            this.PanelMenuLateral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.PanelMenuLateral.Controls.Add(this.SubPanelConfiguraciones);
             this.PanelMenuLateral.Controls.Add(this.BtnConfiguraciones);
             this.PanelMenuLateral.Controls.Add(this.PanelCabeceraMenu);

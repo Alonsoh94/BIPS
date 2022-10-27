@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ocPiqYtal5mMHC1EYSJNi5Cj+e5pPpj5BGbW19nAQJSaTpAz4sqQaFtGTnGpEPkTyU40XyoSWJhHhjnoqOjaxQ==",
+  "dgSpecHash": "GtTe8EVukISR74080QLzRQIjCVoPiX4EwpzXmIPvNDo04g+o9Xx9Ip9b6LxE1kobVsBcUDAvcX8uu233a1d+1g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jose Alonso\\Documents\\Visual Studio 2022 Projects\\BIPS\\BIPS.csproj",
+  "projectFilePath": "C:\\Users\\Jose Alonso\\Documents\\BIPS\\BIPS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jose Alonso\\.nuget\\packages\\bipscontrolsforms\\1.0.0\\bipscontrolsforms.1.0.0.nupkg.sha512",
     "C:\\Users\\Jose Alonso\\.nuget\\packages\\fontawesome.sharp\\6.1.1\\fontawesome.sharp.6.1.1.nupkg.sha512",

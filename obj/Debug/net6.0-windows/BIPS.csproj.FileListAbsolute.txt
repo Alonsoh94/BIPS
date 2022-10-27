@@ -109,3 +109,4 @@ C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\obj\Debug\net6.0
 C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\obj\Debug\net6.0-windows\BIPS.pdb
 C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\obj\Debug\net6.0-windows\BIPS.genruntimeconfig.cache
 C:\Users\Jose Alonso\Documents\Visual Studio 2022 Projects\BIPS\obj\Debug\net6.0-windows\ref\BIPS.dll
+C:\Users\Jose Alonso\Documents\BIPS\obj\Debug\net6.0-windows\BIPS.PRESENTACION.FormEmpresa.resources
