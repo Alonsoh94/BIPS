@@ -40,6 +40,7 @@
             this.bipsTextBox2 = new BipsControlsForms.Controls.BipsTextBox();
             this.bipsTextBox1 = new BipsControlsForms.Controls.BipsTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.bipsSwitch1 = new BipsControlsForms.Controls.BipsSwitch();
             this.bipsTextBox16 = new BipsControlsForms.Controls.BipsTextBox();
             this.bipsTextBox15 = new BipsControlsForms.Controls.BipsTextBox();
@@ -48,7 +49,6 @@
             this.bipsTextBox12 = new BipsControlsForms.Controls.BipsTextBox();
             this.bipsTextBox11 = new BipsControlsForms.Controls.BipsTextBox();
             this.bipsTextBox10 = new BipsControlsForms.Controls.BipsTextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.FLPEmpresa.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -91,7 +91,7 @@
             this.bipsTextBox9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox9.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox9.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox9.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox9.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox9.LabelTextBox = "";
             this.bipsTextBox9.Location = new System.Drawing.Point(8, 466);
             this.bipsTextBox9.Multiline = false;
@@ -113,7 +113,7 @@
             this.bipsTextBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox8.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox8.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox8.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox8.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox8.LabelTextBox = "";
             this.bipsTextBox8.Location = new System.Drawing.Point(8, 410);
             this.bipsTextBox8.Multiline = false;
@@ -135,7 +135,7 @@
             this.bipsTextBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox7.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox7.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox7.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox7.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox7.LabelTextBox = "";
             this.bipsTextBox7.Location = new System.Drawing.Point(8, 354);
             this.bipsTextBox7.Multiline = false;
@@ -157,7 +157,7 @@
             this.bipsTextBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox6.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox6.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox6.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox6.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox6.LabelTextBox = "";
             this.bipsTextBox6.Location = new System.Drawing.Point(8, 298);
             this.bipsTextBox6.Multiline = false;
@@ -179,7 +179,7 @@
             this.bipsTextBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox5.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox5.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox5.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox5.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox5.LabelTextBox = "";
             this.bipsTextBox5.Location = new System.Drawing.Point(8, 242);
             this.bipsTextBox5.Multiline = false;
@@ -201,7 +201,7 @@
             this.bipsTextBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox4.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox4.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox4.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox4.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox4.LabelTextBox = "";
             this.bipsTextBox4.Location = new System.Drawing.Point(8, 186);
             this.bipsTextBox4.Multiline = false;
@@ -223,7 +223,7 @@
             this.bipsTextBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox3.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox3.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox3.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox3.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox3.LabelTextBox = "";
             this.bipsTextBox3.Location = new System.Drawing.Point(8, 130);
             this.bipsTextBox3.Multiline = false;
@@ -245,7 +245,7 @@
             this.bipsTextBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox2.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox2.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox2.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox2.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox2.LabelTextBox = "";
             this.bipsTextBox2.Location = new System.Drawing.Point(8, 74);
             this.bipsTextBox2.Multiline = false;
@@ -267,7 +267,7 @@
             this.bipsTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
             this.bipsTextBox1.Bordercolor = System.Drawing.SystemColors.Highlight;
             this.bipsTextBox1.BorderFocusColor = System.Drawing.Color.Orange;
-            this.bipsTextBox1.ForeColor = System.Drawing.Color.PaleGreen;
+            this.bipsTextBox1.ForeColor = System.Drawing.SystemColors.Window;
             this.bipsTextBox1.LabelTextBox = "";
             this.bipsTextBox1.Location = new System.Drawing.Point(8, 8);
             this.bipsTextBox1.Multiline = false;
@@ -300,11 +300,28 @@
             this.panel2.Size = new System.Drawing.Size(375, 523);
             this.panel2.TabIndex = 1;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.comboBox1.ForeColor = System.Drawing.Color.PaleGreen;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "codigo",
+            "clave",
+            "acceso"});
+            this.comboBox1.Location = new System.Drawing.Point(8, 466);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(359, 29);
+            this.comboBox1.TabIndex = 10;
+            // 
             // bipsSwitch1
             // 
             this.bipsSwitch1.AutoSize = true;
             this.bipsSwitch1.BackGroundSwitchOFF = System.Drawing.Color.Silver;
-            this.bipsSwitch1.BackGroundSwitchON = System.Drawing.SystemColors.ActiveCaption;
+            this.bipsSwitch1.BackGroundSwitchON = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.bipsSwitch1.Depth = 0;
             this.bipsSwitch1.Location = new System.Drawing.Point(8, 423);
             this.bipsSwitch1.Margin = new System.Windows.Forms.Padding(0);
@@ -314,7 +331,7 @@
             this.bipsSwitch1.Ripple = true;
             this.bipsSwitch1.Size = new System.Drawing.Size(93, 37);
             this.bipsSwitch1.SwitchOFF = System.Drawing.Color.DarkGray;
-            this.bipsSwitch1.SwitchOn = System.Drawing.SystemColors.Highlight;
+            this.bipsSwitch1.SwitchOn = System.Drawing.Color.Orange;
             this.bipsSwitch1.TabIndex = 9;
             this.bipsSwitch1.Text = "Estado";
             this.bipsSwitch1.TextColor = System.Drawing.Color.DarkGray;
@@ -473,23 +490,6 @@
             this.bipsTextBox10.TabIndex = 1;
             this.bipsTextBox10.TextContent = "";
             this.bipsTextBox10.UnderLinestyle = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(13)))), ((int)(((byte)(21)))));
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox1.ForeColor = System.Drawing.Color.PaleGreen;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "codigo",
-            "clave",
-            "acceso"});
-            this.comboBox1.Location = new System.Drawing.Point(8, 466);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(359, 29);
-            this.comboBox1.TabIndex = 10;
             // 
             // FormEmpresa
             // 
